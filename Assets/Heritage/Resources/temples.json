@@ -1,0 +1,64 @@
+{
+  "temples": [
+    {
+      "id": "belur",
+      "name": "Chennakeshava",
+      "location": "Belur, Karnataka",
+      "period": "1117 CE onwards",
+      "tradition": "Hoysala architecture",
+      "introduction": "An encounter with the rhythm of Hoysala stonework. Explore a representative pillared hall, a stellate platform and ornamental bands inspired by the temple at Belur.",
+      "sourceUrl": "https://whc.unesco.org/en/list/1670/",
+      "elements": [
+        { "name": "Lathe-turned pillar", "type": "Structural column", "material": "Soapstone", "period": "12th century", "description": "Circular mouldings and polished shafts distinguish many Hoysala columns. This simplified study makes the changing profile visible from every angle.", "historicalConfidence": "Documented tradition / illustrative geometry" },
+        { "name": "Stellate platform", "type": "Jagati / raised platform", "material": "Stone", "period": "12th century", "description": "Projecting and receding edges create a rhythmic footprint. The raised platform provides a route around the shrine. This model abstracts the plan rather than reproducing a survey.", "historicalConfidence": "Documented tradition / illustrative geometry" },
+        { "name": "Ornamental frieze", "type": "Decorative relief band", "material": "Soapstone", "period": "12th century", "description": "Stacked carved bands articulate Hoysala exteriors. Repeated geometric motifs stand in for the much more intricate carvings of the real monument.", "historicalConfidence": "Documented tradition / placeholder ornament" }
+      ],
+      "timeline": [
+        { "date": "1117", "title": "A Hoysala foundation", "description": "Chennakeshava at Belur dates to 1117 CE, during the reign of Vishnuvardhana." },
+        { "date": "12th-13th c.", "title": "An evolving tradition", "description": "Hoysala workshops developed richly articulated plans, polished columns and elaborate stone ornament." },
+        { "date": "2023", "title": "World Heritage", "description": "Belur and Halebidu are components of the Sacred Ensembles of the Hoysalas, inscribed by UNESCO in 2023." },
+        { "date": "Today", "title": "A living temple", "description": "Worship continues at Belur. This digital study represents selected architectural ideas, not the full complex." }
+      ]
+    },
+    {
+      "id": "halebidu",
+      "name": "Hoysaleswara",
+      "location": "Halebidu, Karnataka",
+      "period": "12th century",
+      "tradition": "Hoysala architecture",
+      "introduction": "Two shrine forms, a shared platform and an extraordinary sculptural tradition. This section studies Halebidu through its paired composition and richly layered exterior.",
+      "sourceUrl": "https://whc.unesco.org/en/list/1670/",
+      "elements": [
+        { "name": "Moulded pillar", "type": "Hall column", "material": "Soapstone", "period": "12th century", "description": "Alternating discs, necks and capitals give the column its measured silhouette. Rotate this study to examine the relationship between a profile and a surface of revolution.", "historicalConfidence": "Documented tradition / illustrative geometry" },
+        { "name": "Paired shrine study", "type": "Twin-shrine composition", "material": "Stone", "period": "12th century", "description": "Hoysaleswara is known for its paired sanctuaries. These low, stepped masses are a schematic study of that relationship, not a reconstruction of lost roof forms.", "historicalConfidence": "Documented composition / schematic model" },
+        { "name": "Relief register", "type": "Exterior frieze", "material": "Soapstone", "period": "12th century", "description": "Horizontal registers organize the richly carved exterior. Abstract repeating motifs communicate their rhythm without claiming to reproduce specific sacred figures.", "historicalConfidence": "Documented tradition / placeholder ornament" }
+      ],
+      "timeline": [
+        { "date": "12th c.", "title": "The Hoysala capital", "description": "The Hoysaleswara complex developed at Halebidu during the Hoysala period." },
+        { "date": "12th-13th c.", "title": "Stone as narrative", "description": "Sculptural registers and carefully articulated architecture became hallmarks of the Hoysala tradition." },
+        { "date": "2023", "title": "World Heritage", "description": "Halebidu joined Belur and Somanathapura in the UNESCO-listed Sacred Ensembles of the Hoysalas." },
+        { "date": "Today", "title": "Conservation and study", "description": "The surviving architecture supports continued research and conservation. This model is an educational abstraction." }
+      ]
+    },
+    {
+      "id": "hampi",
+      "name": "Virupaksha",
+      "location": "Hampi, Karnataka",
+      "period": "Earlier origins; Vijayanagara additions",
+      "tradition": "Dravidian / Vijayanagara",
+      "introduction": "A monumental gateway rises above a landscape of granite. Explore an interpretation of Virupaksha's entrance tower and the ordered columns of a temple courtyard.",
+      "sourceUrl": "https://whc.unesco.org/en/list/241/",
+      "elements": [
+        { "name": "Mandapa column", "type": "Pavilion support", "material": "Granite", "period": "Vijayanagara period", "description": "Stone columns organize covered gathering spaces. This geometric column study emphasizes the base, shaft, capital and the beam it supports.", "historicalConfidence": "Documented tradition / illustrative geometry" },
+        { "name": "Gopuram study", "type": "Temple entrance tower", "material": "Stone base; masonry superstructure", "period": "Multiple building phases", "description": "A gopuram marks a temple entrance with a tapering, tiered silhouette. This scaled study abstracts the tower's massing and repeated architectural details.", "historicalConfidence": "Documented type / schematic proportions" },
+        { "name": "Pavilion cornice", "type": "Roof-edge moulding", "material": "Stone", "period": "Vijayanagara period", "description": "Projecting roof edges cast a clear shadow over a pavilion. Repetition ties individual supports into a continuous architectural space.", "historicalConfidence": "Documented type / illustrative geometry" }
+      ],
+      "timeline": [
+        { "date": "Earlier origins", "title": "A sacred site", "description": "Virupaksha's sacred history predates the Vijayanagara capital. Its buildings reflect multiple phases." },
+        { "date": "14th-16th c.", "title": "Vijayanagara", "description": "Hampi flourished as the capital of the Vijayanagara Empire. Monumental religious architecture shaped its landscape." },
+        { "date": "1986", "title": "World Heritage", "description": "The Group of Monuments at Hampi was inscribed on the UNESCO World Heritage List in 1986." },
+        { "date": "Today", "title": "A living sacred place", "description": "Virupaksha remains a place of worship. Its continued use has brought changes and additions across time." }
+      ]
+    }
+  ]
+}
