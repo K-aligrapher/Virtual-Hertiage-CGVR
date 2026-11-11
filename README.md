@@ -122,9 +122,9 @@ Tools/Build.ps1                # Command-line build (+ -Smoke)
 # Browser build (Builds/WebGL), or use the Unity menu: Heritage > Build WebGL (browser)
 & "C:\Program Files\Unity\Hub\Editor\6000.6.1f1\Editor\Unity.exe" -batchmode -quit -projectPath . -executeMethod VirtualHeritage.Editor.HeritageProject.BuildWebGL
 
-# Deploy the browser build
-cd Builds\WebGL
-vercel deploy --prod --name virtual-heritage-karnataka-cgvr
+# Deploy the browser build: copy it into web/ and push main (Vercel is connected to this repo and serves web/, see vercel.json)
+Remove-Item web -Recurse -Force; New-Item web -ItemType Directory; Copy-Item Builds\WebGL\Build,Builds\WebGL\TemplateData,Builds\WebGL\index.html web -Recurse
+git add web; git commit -m "Update WebGL build"; git push origin main
 ```
 
 The smoke test checks all three temples, all nine inspections, the timelines, Then/Now, teleports, audio and UI modes, and writes `Artifacts/smoke-results.json` plus screenshots (currently **98 / 98 passing**). It can't certify headset optics, comfort or frame rate on your hardware, so do a quick pass on a real headset.
