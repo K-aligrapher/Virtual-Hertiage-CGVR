@@ -115,10 +115,12 @@ namespace VirtualHeritage
         {
             if (delta.sqrMagnitude < 1e-8f) return false;
             var target = feet + delta;
+            // Find the ground first, then test the body at that height, so narrow stepped tiers can be climbed one riser at a time.
+            if (!Physics.Raycast(target + Vector3.up * (StepHeight + .05f), Vector3.down, out var hit, StepHeight + 1.2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return false;
+            target.y = hit.point.y;
             var bottom = target + Vector3.up * (StepHeight + BodyRadius); var top = target + Vector3.up * (EyeHeight - BodyRadius + .05f);
             if (Physics.CheckCapsule(bottom, top, BodyRadius, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return false;
-            if (!Physics.Raycast(target + Vector3.up * (StepHeight + .05f), Vector3.down, out var hit, StepHeight + 1.2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return false;
-            feet = new Vector3(target.x, hit.point.y, target.z);
+            feet = target;
             return true;
         }
 

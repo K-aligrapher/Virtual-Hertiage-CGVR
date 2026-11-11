@@ -180,7 +180,7 @@ namespace VirtualHeritage
                         HeritageAtmosphere.Garland(geometry,world,new Vector3(side * 5.2f,3.45f,-.4f + j * 2.2f),new Vector3(side * 5.2f,3.45f,-.4f + (j + 1) * 2.2f),.32f,10);
                 HeritageAtmosphere.Lamp(geometry,world,new Vector3(0,0,5.2f),true,2.2f);
             }
-            else foreach (var door in geometry.Doors) HeritageAtmosphere.Sanctum(geometry,world,door);
+            else for (int d = 0; d < geometry.Doors.Count; d++) HeritageAtmosphere.Sanctum(geometry,world,geometry.Doors[d],d < geometry.Altars.Count ? geometry.Altars[d] : (Vector3?)null);
             for (int i = 0; i < 3; i++)
             {
                 float x = (i-1)*5.3f;

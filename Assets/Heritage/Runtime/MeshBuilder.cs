@@ -187,6 +187,68 @@ namespace VirtualHeritage
             }
         }
 
+        // Appends another builder's geometry (both must be untransformed).
+        public void Append(MeshBuilder o)
+        {
+            int offset = v.Count;
+            v.AddRange(o.v); n.AddRange(o.n); uv.AddRange(o.uv);
+            foreach (int i in o.t) t.Add(i + offset);
+        }
+
+        struct Vtx { public Vector3 p, n; public Vector2 uv; }
+
+        static float Axis(Vector3 p, int a) => a == 0 ? p.x : a == 1 ? p.y : p.z;
+
+        // Keeps the part of a convex polygon where sign * (coordinate - value) >= 0.
+        static List<Vtx> Clip(List<Vtx> poly, int axis, float value, float sign)
+        {
+            var res = new List<Vtx>();
+            for (int i = 0; i < poly.Count; i++)
+            {
+                Vtx cur = poly[i], nxt = poly[(i + 1) % poly.Count];
+                float dc = sign * (Axis(cur.p, axis) - value), dn = sign * (Axis(nxt.p, axis) - value);
+                bool cin = dc >= 0, nin = dn >= 0;
+                if (cin) res.Add(cur);
+                if (cin != nin)
+                {
+                    float s = dc / (dc - dn);
+                    res.Add(new Vtx { p = Vector3.Lerp(cur.p, nxt.p, s), n = Vector3.Lerp(cur.n, nxt.n, s).normalized, uv = Vector2.Lerp(cur.uv, nxt.uv, s) });
+                }
+            }
+            return res;
+        }
+
+        // Removes everything inside an axis-aligned box so a room can be hollowed out of solid massing.
+        // Triangles crossing the box are split exactly on its faces; the cut is left open, so the room's own walls must cover it.
+        public void Carve(Bounds hole)
+        {
+            Vector3 min = hole.min, max = hole.max;
+            var nv = new List<Vector3>(); var nn = new List<Vector3>(); var nuv = new List<Vector2>(); var nt = new List<int>();
+            void Emit(List<Vtx> poly)
+            {
+                if (poly.Count < 3) return;
+                int b = nv.Count;
+                foreach (var p in poly) { nv.Add(p.p); nn.Add(p.n); nuv.Add(p.uv); }
+                for (int i = 1; i < poly.Count - 1; i++) { nt.Add(b); nt.Add(b + i); nt.Add(b + i + 1); }
+            }
+            for (int i = 0; i < t.Count; i += 3)
+            {
+                var tri = new List<Vtx>(3);
+                for (int k = 0; k < 3; k++) tri.Add(new Vtx { p = v[t[i + k]], n = n[t[i + k]], uv = uv[t[i + k]] });
+                var tb = new Bounds(tri[0].p, Vector3.zero); tb.Encapsulate(tri[1].p); tb.Encapsulate(tri[2].p);
+                if (!tb.Intersects(hole)) { Emit(tri); continue; }
+                var rest = tri;
+                for (int a = 0; a < 3 && rest.Count >= 3; a++)
+                {
+                    Emit(Clip(rest, a, min[a], -1f)); rest = Clip(rest, a, min[a], 1f);
+                    if (rest.Count < 3) break;
+                    Emit(Clip(rest, a, max[a], 1f)); rest = Clip(rest, a, max[a], -1f);
+                }
+            }
+            v.Clear(); n.Clear(); uv.Clear(); t.Clear();
+            v.AddRange(nv); n.AddRange(nn); uv.AddRange(nuv); t.AddRange(nt);
+        }
+
         public Mesh ToMesh(string name)
         {
             var mesh = new Mesh { name = name, indexFormat = v.Count > 65000 ? IndexFormat.UInt32 : IndexFormat.UInt16 };

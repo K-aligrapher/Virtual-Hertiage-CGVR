@@ -12,6 +12,8 @@ namespace VirtualHeritage
         public readonly List<Material> OwnedMaterials = new List<Material>();
         // Sanctum doorways (position on the floor, facing direction) for lamps and garlands.
         public readonly List<Vector3> Doors = new List<Vector3>();
+        // Top centre of the empty offering plinth inside each enterable sanctum, matching Doors by index.
+        public readonly List<Vector3> Altars = new List<Vector3>();
         readonly List<Mesh> meshes = new List<Mesh>();
         const float Jagati = .72f;
 
@@ -240,6 +242,14 @@ namespace VirtualHeritage
                 Pale = new MeshBuilder(), Brass = new MeshBuilder(), Wood = new MeshBuilder();
             public readonly List<Bounds> Blocks = new List<Bounds>();
             public void Block(Vector3 centre, Vector3 size) { Blocks.Add(new Bounds(centre, size)); }
+
+            public void Carve(Bounds hole) { Floor.Carve(hole); Stone.Carve(hole); Edge.Carve(hole); Recess.Carve(hole); Pale.Carve(hole); Brass.Carve(hole); Wood.Carve(hole); }
+
+            public void Merge(Kit o)
+            {
+                Floor.Append(o.Floor); Stone.Append(o.Stone); Edge.Append(o.Edge); Recess.Append(o.Recess); Pale.Append(o.Pale); Brass.Append(o.Brass); Wood.Append(o.Wood);
+                Blocks.AddRange(o.Blocks);
+            }
         }
 
         public void Emit(Kit k, Transform parent, string name)
@@ -388,7 +398,7 @@ namespace VirtualHeritage
 
         // Carved sanctum doorway with closed teak leaves, built proud of a wall face.
         // bottom is on the floor at the wall face; outward points away from the wall.
-        public void Doorway(Kit k, Vector3 bottom, Vector3 outward, float width = 1.1f, float height = 2.1f)
+        public void Doorway(Kit k, Vector3 bottom, Vector3 outward, float width = 1.1f, float height = 2.1f, bool open = false)
         {
             var rot = Quaternion.LookRotation(outward, Vector3.up);
             Vector3 L(float x, float y, float z) => bottom + rot * new Vector3(x, y, z);
@@ -401,6 +411,19 @@ namespace VirtualHeritage
                 mat.Box(L(0, tall + .07f, depth * .5f), new Vector3(2 * off + .14f, .14f, depth), rot);
             }
             for (int i = 0; i < 7; i++) k.Edge.Ellipsoid(L(-width * .45f + i * width * .15f, height + .72f, .22f), new Vector3(.06f, .08f, .04f), rot, 8, 4);
+            if (open)
+            {
+                // Leaves swung inward and folded flat against the passage walls.
+                float leaf = width * .5f - .02f;
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    k.Wood.Box(L(s * (width * .5f - .04f), .12f + height * .5f, -.06f - leaf * .5f), new Vector3(.07f, height, leaf), rot);
+                    for (int r = 0; r < 5; r++)
+                        for (int c = 0; c < 2; c++) k.Brass.Ellipsoid(L(s * (width * .5f - .08f), .4f + r * height * .19f, -.2f - c * leaf * .5f), new Vector3(.02f, .03f, .03f), rot, 6, 3);
+                }
+                Doors.Add(bottom + outward * .7f);
+                return;
+            }
             for (int s = -1; s <= 1; s += 2)
             {
                 k.Wood.Box(L(s * width * .25f, .12f + height * .5f, .05f), new Vector3(width * .5f - .02f, height, .1f), rot);
@@ -409,6 +432,48 @@ namespace VirtualHeritage
                 k.Brass.Lathe(new[] { new Vector2(.04f, 0), new Vector2(.06f, .015f), new Vector2(.04f, .03f) }, 10, L(s * .08f, .12f + height * .5f, .1f), rot * Quaternion.Euler(90, 0, 0), Vector3.one);
             }
             Doors.Add(bottom + outward * .7f);
+        }
+
+        // ---------- Walkable sanctum (garbhagriha) ----------
+
+        const float ChamberInner = .8f, ChamberOuter = 1.3f, ChamberBack = 7.5f, RoofUnder = 2.95f, RoofTop = 3.92f;
+
+        // Room behind the open doorway: floor, walls, ceiling, niche and an empty offering plinth. No sacred image is depicted.
+        void Chamber(Kit k, float sx)
+        {
+            float floor = Jagati + .1f, wallY = (floor + RoofUnder) * .5f, wallH = RoofUnder - Jagati, zFront = 5.55f, depth = ChamberBack + .25f - zFront;
+            float zMid = zFront + depth * .5f, wallW = ChamberOuter - ChamberInner, wallX = (ChamberOuter + ChamberInner) * .5f;
+            k.Floor.Box(new Vector3(sx, Jagati + .05f, (zFront + ChamberBack) * .5f), new Vector3(2 * ChamberInner, .1f, ChamberBack - zFront));
+            for (int s = -1; s <= 1; s += 2)
+            {
+                k.Stone.Box(new Vector3(sx + s * wallX, Jagati + wallH * .5f + .0f, zMid), new Vector3(wallW, wallH + .0f, depth));
+                k.Block(new Vector3(sx + s * wallX, Jagati + wallH * .5f, zMid), new Vector3(wallW, wallH, depth));
+                k.Edge.Box(new Vector3(sx + s * (ChamberInner - .03f), floor + .11f, (zFront + ChamberBack) * .5f), new Vector3(.06f, .22f, ChamberBack - zFront));
+                k.Edge.Box(new Vector3(sx + s * (ChamberInner - .04f), RoofUnder - .07f, (zFront + ChamberBack) * .5f), new Vector3(.08f, .14f, ChamberBack - zFront));
+                k.Edge.Box(new Vector3(sx + s * (ChamberInner - .05f), floor + 1.065f, ChamberBack - .05f), new Vector3(.1f, RoofUnder - floor, .1f));
+            }
+            // Back wall with a shallow recessed niche and carved frame.
+            k.Stone.Box(new Vector3(sx, Jagati + wallH * .5f, ChamberBack + .125f), new Vector3(2 * ChamberOuter, wallH, .25f));
+            k.Block(new Vector3(sx, Jagati + wallH * .5f, ChamberBack + .125f), new Vector3(2 * ChamberOuter, wallH, .25f));
+            k.Recess.Box(new Vector3(sx, floor + 1.2f, ChamberBack - .015f), new Vector3(1.1f, 1.6f, .03f));
+            for (int s = -1; s <= 1; s += 2) k.Edge.Box(new Vector3(sx + s * .62f, floor + 1.14f, ChamberBack - .04f), new Vector3(.1f, 1.7f, .08f));
+            k.Edge.Box(new Vector3(sx, floor + 2f, ChamberBack - .04f), new Vector3(1.34f, .12f, .08f));
+            // Roof slab over passage and room, with a cut cap on top as before.
+            k.Stone.Box(new Vector3(sx, (RoofUnder + RoofTop) * .5f, zMid), new Vector3(2 * ChamberOuter, RoofTop - RoofUnder, depth));
+            k.Block(new Vector3(sx, (RoofUnder + RoofTop) * .5f, zMid), new Vector3(2 * ChamberOuter, RoofTop - RoofUnder, depth));
+            k.Edge.Box(new Vector3(sx, RoofTop + .1f, zMid), new Vector3(2.8f, .2f, depth + .1f));
+            // Ceiling coffer ring.
+            k.Edge.Box(new Vector3(sx, RoofUnder - .03f, (zFront + ChamberBack) * .5f), new Vector3(2 * ChamberInner - .3f, .06f, .1f));
+            // Empty offering plinth with a brass tray and two lamp cups.
+            float pz = ChamberBack - .4f, top = floor + .54f;
+            k.Stone.Box(new Vector3(sx, floor + .27f, pz), new Vector3(1f, .54f, .7f));
+            k.Edge.Box(new Vector3(sx, top + .035f, pz), new Vector3(1.1f, .07f, .8f));
+            k.Block(new Vector3(sx, floor + .32f, pz), new Vector3(1.1f, .64f, .8f));
+            top += .07f;
+            k.Brass.Lathe(new[] { new Vector2(0, 0), new Vector2(.34f, 0), new Vector2(.36f, .03f), new Vector2(.3f, .05f), new Vector2(0, .05f) }, 24, new Vector3(sx, top, pz));
+            for (int s = -1; s <= 1; s += 2)
+                k.Brass.Lathe(new[] { new Vector2(0, .05f), new Vector2(.07f, .05f), new Vector2(.09f, .09f), new Vector2(.06f, .1f), new Vector2(0, .08f) }, 12, new Vector3(sx + s * .18f, top, pz));
+            Altars.Add(new Vector3(sx, top + .05f, pz));
         }
 
         // ---------- Hoysala shrine ----------
@@ -487,10 +552,11 @@ namespace VirtualHeritage
                 var rot = Quaternion.LookRotation(outward, Vector3.up);
                 bool alongX = Mathf.Abs(axis.x) > .5f;
                 var solids = new List<Vector2>(); float cursor = 0;
-                var sorted = new List<float>(gaps); sorted.Sort();
-                foreach (float g in sorted)
+                // Gap centres measured along this wall's own direction, ascending (the back wall runs in -X).
+                var sorted = new List<float>(); foreach (float g in gaps) sorted.Add(alongX ? (c.x + g - a.x) * Mathf.Sign(axis.x) : g); sorted.Sort();
+                foreach (float centre in sorted)
                 {
-                    float t0 = (alongX ? (c.x + g - a.x) * Mathf.Sign(axis.x) : g) - (doorway ? .95f : 1.3f);
+                    float t0 = centre - (doorway ? .95f : 1.3f);
                     float t1 = t0 + (doorway ? 1.9f : 2.6f);
                     if (t0 > cursor) solids.Add(new Vector2(cursor, t0));
                     cursor = t1;
@@ -576,6 +642,8 @@ namespace VirtualHeritage
                 float top = h * (i + 1);
                 k.Floor.Box(frontCentre + new Vector3(0, top * .5f, (i + .5f) * tread), new Vector3(width, top, tread));
             }
+            // Flat landing running from the top tread onto the platform, bridging the narrow lower tiers at its stellate tip.
+            k.Floor.Box(frontCentre + new Vector3(0, rise * .5f - .005f, count * tread + .75f), new Vector3(width, rise - .01f, 1.5f));
             for (int s = -1; s <= 1; s += 2)
             {
                 k.Edge.Box(frontCentre + new Vector3(s * (width * .5f + .18f), rise * .5f + .1f, count * tread * .5f), new Vector3(.36f, rise + .2f, count * tread));
@@ -801,11 +869,24 @@ namespace VirtualHeritage
                     float R = index == 1 ? 2.6f : 2.9f;
                     // The base mouldings' front point stops just behind the vestibule face.
                     var sanctum = new Vector3(sx, Jagati, 5.65f + 1.07f * R);
-                    Vimana(k, sanctum, R, tower, detail);
-                    k.Stone.Box(new Vector3(sx, Jagati + 1.6f, 6.15f), new Vector3(2.6f, 3.2f, 1.2f));
-                    k.Edge.Box(new Vector3(sx, Jagati + 3.3f, 6.15f), new Vector3(2.8f, .2f, 1.3f));
-                    k.Block(new Vector3(sx, Jagati + 1.6f, 6.15f), new Vector3(2.6f, 3.2f, 1.2f));
-                    if (!miniature) Doorway(k, new Vector3(sx, Jagati + .1f, 5.55f), Vector3.back);
+                    var vimana = new Kit();
+                    Vimana(vimana, sanctum, R, tower, detail);
+                    if (miniature)
+                    {
+                        k.Merge(vimana);
+                        k.Stone.Box(new Vector3(sx, Jagati + 1.6f, 6.15f), new Vector3(2.6f, 3.2f, 1.2f));
+                        k.Edge.Box(new Vector3(sx, Jagati + 3.3f, 6.15f), new Vector3(2.8f, .2f, 1.3f));
+                        k.Block(new Vector3(sx, Jagati + 1.6f, 6.15f), new Vector3(2.6f, 3.2f, 1.2f));
+                    }
+                    else
+                    {
+                        // Hollow the garbhagriha out of the solid massing, then rebuild it as a walkable room.
+                        var hole = new Bounds(); hole.SetMinMax(new Vector3(sx - ChamberOuter, Jagati - .02f, 5.5f), new Vector3(sx + ChamberOuter, RoofUnder + .02f, ChamberBack + .25f));
+                        vimana.Carve(hole);
+                        k.Merge(vimana);
+                        Chamber(k, sx);
+                        Doorway(k, new Vector3(sx, Jagati + .1f, 5.55f), Vector3.back, 1.6f, 1.9f, true);
+                    }
                 }
                 float hallWidth = index == 1 ? 13.2f : 5.6f;
                 var hallDoors = index == 1 ? new[] { -3.9f, 3.9f } : new[] { 0f };

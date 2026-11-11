@@ -392,10 +392,24 @@ namespace VirtualHeritage
             if (full) Flagstaff(g, parent, new Vector3(0, 0, -12.5f));
         }
 
-        // Lamp, garland and incense before a closed sanctum door. No sacred image is depicted.
-        public static void Sanctum(HeritageGeometry g, Transform parent, Vector3 door)
+        // Lamp, garland and incense at an open sanctum door, with lamp light inside the room. No sacred image is depicted.
+        public static void Sanctum(HeritageGeometry g, Transform parent, Vector3 door, Vector3? altar = null)
         {
-            Lamp(g, parent, door, true, 2.4f);
+            // The standing lamp sits beside the doorway so the way in stays clear.
+            Lamp(g, parent, door + new Vector3(-1.05f, 0, 0), true, 2.4f);
+            if (altar.HasValue)
+            {
+                var a = altar.Value;
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    var flame = g.MeshObject("Altar flame", parent, g.Lathe(new[] { new Vector2(0, 0), new Vector2(.03f, .035f), new Vector2(.02f, .09f), new Vector2(0, .15f) }, 8), g.Flame);
+                    flame.transform.localPosition = a + new Vector3(s * .18f, .07f, 0);
+                    flame.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.Off;
+                }
+                Garland(g, parent, a + new Vector3(-.5f, 1.45f, .3f), a + new Vector3(.5f, 1.45f, .3f), .25f, 8);
+                var glow = new GameObject("Sanctum lamp light"); glow.transform.SetParent(parent, false); glow.transform.localPosition = a + new Vector3(0, .9f, -.6f);
+                var gl = glow.AddComponent<Light>(); gl.type = LightType.Point; gl.color = new Color(1f, .7f, .38f); gl.range = 4.5f; gl.intensity = 1.6f; gl.shadows = LightShadows.None;
+            }
             Garland(g, parent, door + new Vector3(-.75f, 2.3f, .45f), door + new Vector3(.75f, 2.3f, .45f), .35f, 12);
             Smoke(parent, door + new Vector3(1.1f, .3f, -.2f), new Color(.85f, .82f, .78f, .12f), .25f, 1.8f, .6f);
             var fill = new GameObject("Hall fill light"); fill.transform.SetParent(parent, false); fill.transform.localPosition = door + new Vector3(0, 2.2f, -2.2f);
