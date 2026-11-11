@@ -32,12 +32,45 @@ namespace VirtualHeritage
                 yield return null; yield return null;
                 yield return Capture(shot.name);
             }
+            if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--walk-check"))
+                foreach (int t in new[] { 0, 1 })
+                {
+                    app.OpenTemple(t); yield return new WaitForSeconds(1.5f);
+                    Physics.SyncTransforms();
+                    float sx = t == 1 ? -3.9f : 0f;
+                    Debug.Log("HERITAGE_WALK temple " + t + " from spawn reaches front steps/hall/sanctum: " + string.Join(", ", Reach(new Vector3(10,0,-17), new[] { new Vector3(sx,0,-3), new Vector3(sx,0,2), new Vector3(sx,0,6) })));
+                }
             Debug.Log("HERITAGE_SHOTS done");
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.Exit(0);
 #else
             Application.Quit();
 #endif
+        }
+
+        // Flood-fills where the walking capsule can reach (same rules as the rig) and reports which targets are reachable.
+        static string[] Reach(Vector3 start, Vector3[] targets)
+        {
+            const float step = .36f, radius = .25f, eye = 1.7f, cell = .15f;
+            var seen = new System.Collections.Generic.HashSet<Vector2Int>(); var q = new System.Collections.Generic.Queue<Vector2Int>(); var y = new System.Collections.Generic.Dictionary<Vector2Int,float>();
+            Vector2Int K(float x,float z) => new Vector2Int(Mathf.RoundToInt(x/cell),Mathf.RoundToInt(z/cell));
+            var s0 = K(start.x,start.z); seen.Add(s0); y[s0] = 0; q.Enqueue(s0);
+            while (q.Count > 0)
+            {
+                var c = q.Dequeue();
+                foreach (var d in new[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right })
+                {
+                    var n = c + d; if (seen.Contains(n)) continue;
+                    var tg = new Vector3(n.x*cell,y[c],n.y*cell); if (Mathf.Abs(tg.x) > 16.6f || tg.z < -34f || tg.z > 22f) continue;
+                    if (!Physics.Raycast(tg + Vector3.up*(step+.05f),Vector3.down,out var hit,step+1.2f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore)) continue;
+                    tg.y = hit.point.y;
+                    if (Physics.CheckCapsule(tg + Vector3.up*(step+radius),tg + Vector3.up*(eye-radius+.05f),radius,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore)) continue;
+                    seen.Add(n); y[n] = tg.y; q.Enqueue(n);
+                }
+            }
+            var res = new string[targets.Length];
+            for (int i = 0; i < targets.Length; i++) res[i] = "z=" + targets[i].z + (seen.Contains(K(targets[i].x,targets[i].z)) ? " OK" : " BLOCKED");
+            return res;
         }
 
         static Shot[] Shots()

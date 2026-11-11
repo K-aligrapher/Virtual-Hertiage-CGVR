@@ -181,22 +181,24 @@ namespace VirtualHeritage
                 HeritageAtmosphere.Lamp(geometry,world,new Vector3(0,0,5.2f),true,2.2f);
             }
             else for (int d = 0; d < geometry.Doors.Count; d++) HeritageAtmosphere.Sanctum(geometry,world,geometry.Doors[d],d < geometry.Altars.Count ? geometry.Altars[d] : (Vector3?)null);
+            // Belur's front steps are on the centre line, so its study row sits further back to leave them clear.
+            float sz = index == 0 ? -6.4f : -4f;
             for (int i = 0; i < 3; i++)
             {
                 float x = (i-1)*5.3f;
-                geometry.Box("Study plinth " + i,world,new Vector3(x,.16f,-4),new Vector3(2.2f,.32f,2.1f),geometry.Dark);
-                geometry.Box("Study plinth rim " + i,world,new Vector3(x,.33f,-4),new Vector3(2.24f,.03f,2.14f),geometry.Brass,false);
+                geometry.Box("Study plinth " + i,world,new Vector3(x,.16f,sz),new Vector3(2.2f,.32f,2.1f),geometry.Dark);
+                geometry.Box("Study plinth rim " + i,world,new Vector3(x,.33f,sz),new Vector3(2.24f,.03f,2.14f),geometry.Brass,false);
                 Transform model;
-                if (i == 0) model = geometry.Pillar(world,new Vector3(x,.32f,-4),index == 2).transform;
-                else if (i == 1 && index == 2) model = geometry.Tower(world,new Vector3(x,.32f,-4),.25f).transform;
-                else if (i == 1 && index == 1) model = geometry.ShrineStudy(world,new Vector3(x,.32f,-4)).transform;
-                else if (i == 1) model = geometry.Star(world,new Vector3(x,.32f,-4),1.9f,.55f).transform;
-                else if (index == 2) model = geometry.CorniceStudy(world,new Vector3(x,.32f,-4)).transform;
-                else { model = geometry.Frieze(world,new Vector3(x,.32f,-4)).transform; model.localScale = Vector3.one * .65f; }
+                if (i == 0) model = geometry.Pillar(world,new Vector3(x,.32f,sz),index == 2).transform;
+                else if (i == 1 && index == 2) model = geometry.Tower(world,new Vector3(x,.32f,sz),.25f).transform;
+                else if (i == 1 && index == 1) model = geometry.ShrineStudy(world,new Vector3(x,.32f,sz)).transform;
+                else if (i == 1) model = geometry.Star(world,new Vector3(x,.32f,sz),1.9f,.55f).transform;
+                else if (index == 2) model = geometry.CorniceStudy(world,new Vector3(x,.32f,sz)).transform;
+                else { model = geometry.Frieze(world,new Vector3(x,.32f,sz)).transform; model.localScale = Vector3.one * .65f; }
                 model.gameObject.AddComponent<HeritageTarget>().Configure(this,HeritageTargetKind.Element,i);
                 elements.Add(model);
-                Label("0"+(i+1)+"  /  "+CurrentTemple.elements[i].name.ToUpperInvariant(),new Vector3(x,.5f,-5.7f),.026f);
-                geometry.Ring(world,new Vector3(x,.004f,-4),1.38f,geometry.Teal);
+                Label("0"+(i+1)+"  /  "+CurrentTemple.elements[i].name.ToUpperInvariant(),new Vector3(x,.5f,sz - 1.7f),.026f);
+                geometry.Ring(world,new Vector3(x,.004f,sz),1.38f,geometry.Teal);
             }
             float flank = index == 1 ? 12.6f : 11;
             AddLanding(new Vector3(0,0,-9)); AddLanding(new Vector3(-8,0,-2)); AddLanding(new Vector3(8,0,-2));
