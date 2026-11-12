@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit.UI;
 
 namespace VirtualHeritage
 {
-    public sealed class HeritageUI : MonoBehaviour
+    public sealed partial class HeritageUI : MonoBehaviour
     {
         public Canvas canvas;
         public RectTransform panel;
@@ -43,13 +43,14 @@ namespace VirtualHeritage
             footer = Rect("Collection footer",transform,0,0,0,48); StretchWidth(footer);
             footer.anchorMin = new Vector2(0,0); footer.anchorMax = new Vector2(1,0); footer.pivot = new Vector2(0,0); footer.anchoredPosition = Vector2.zero;
             Background(footer,ink);
-            Text(footer,"WASD WALK   /   SHIFT RUN   /   RIGHT-DRAG LOOK   /   Q E TURN   /   CLICK RINGS TO TELEPORT   /   T THEN-NOW   /   ESC COLLECTION",28,15,900,24,12,jade);
+            footerHint = Text(footer,"WASD WALK   /   SHIFT RUN   /   RIGHT-DRAG LOOK   /   Q E TURN   /   CLICK RINGS TO TELEPORT   /   T THEN-NOW   /   ESC COLLECTION",28,15,900,24,12,jade);
             var note = Text(footer,"Illustrative models. Not archaeological reconstructions.",0,13,420,24,13,muted);
             note.alignment = TextAnchor.MiddleRight; note.rectTransform.anchorMin = note.rectTransform.anchorMax = new Vector2(1,1); note.rectTransform.pivot = new Vector2(1,1); note.rectTransform.anchoredPosition = new Vector2(-28,-13);
 
-            panel = Rect("Collection panel",transform,24,100,392,710); Background(panel,ink);
+            panel = Rect("Collection panel",transform,24,100,392,745); Background(panel,ink);
             var fadeRect = Rect("Transition veil",transform,0,0,0,0); fadeRect.anchorMin = Vector2.zero; fadeRect.anchorMax = Vector2.one; fadeRect.offsetMin = fadeRect.offsetMax = Vector2.zero;
             Fade = fadeRect.gameObject.AddComponent<Image>(); Fade.color = new Color(.025f,.04f,.035f,0); Fade.raycastTarget = false;
+            InitGuideUI();
             ShowHub();
         }
 
@@ -109,6 +110,8 @@ namespace VirtualHeritage
             }
             Text(panel,"" + app.VisitedCount + " / 3 PLACES VISITED",24,632,300,22,12,muted);
             AudioButton(660);
+            if (!app.Study.Running) Button(panel,"Student study",160,660,208,32,() => app.Study.Begin());
+            GuideRow();
         }
 
         public void ShowTemple()
@@ -133,6 +136,7 @@ namespace VirtualHeritage
             Button(panel,"Overview",244,624,124,38,app.Overview);
             periodState = Text(panel,"",24,675,344,21,12,jade);
             UpdatePeriod();
+            GuideRow();
         }
 
         void BuildTimeline(float y)
@@ -178,6 +182,7 @@ namespace VirtualHeritage
                 Button(panel,app.Wireframe ? "Solid" : "Mesh",256,633,112,40,app.ToggleWireframe);
             }
             else Button(panel,"Then / Now",24,633,164,40,() => app.SetThen(!app.Then));
+            GuideRow();
         }
 
         void AudioButton(float y)
@@ -206,12 +211,14 @@ namespace VirtualHeritage
         public void SetVR(bool active)
         {
             vr = active; header.gameObject.SetActive(!active); footer.gameObject.SetActive(!active);
+            if (active) { panelHidden = false; panel.gameObject.SetActive(true); }
+            SetCaption(app.guide.Caption);
             canvas.renderMode = active ? RenderMode.WorldSpace : RenderMode.ScreenSpaceOverlay;
             canvas.worldCamera = app.rig.view;
             var scaler = GetComponent<CanvasScaler>(); scaler.enabled = !active;
             if (active)
             {
-                var root = (RectTransform)transform; root.sizeDelta = new Vector2(392,710); root.localScale = Vector3.one * .0025f;
+                var root = (RectTransform)transform; root.sizeDelta = new Vector2(392,745); root.localScale = Vector3.one * .0025f;
                 panel.anchoredPosition = Vector2.zero; Recenter();
             }
             else { transform.localScale = Vector3.one; panel.anchoredPosition = new Vector2(24,-100); }

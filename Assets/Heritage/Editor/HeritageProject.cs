@@ -254,6 +254,103 @@ namespace VirtualHeritage.Editor
             }
         }
 
+        // ---------- Standalone Meta Quest (Android, OpenXR) ----------
+
+        // Builds an APK that runs on the headset by itself, with no PC or cable. Uses a lighter render pipeline
+        // (no ambient occlusion, one shadow cascade) because the headset is a mobile GPU.
+        [MenuItem("Heritage/Build Quest (Android APK)")]
+        public static void BuildQuest()
+        {
+            Configure();
+            var desktop = GraphicsSettings.defaultRenderPipeline; var desktopQuality = QualitySettings.renderPipeline;
+            try
+            {
+                if (!BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Android,BuildTarget.Android))
+                    throw new InvalidOperationException("Android Build Support is not installed for this Unity editor.");
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android);
+                EditorUserBuildSettings.selectedBuildTargetGroup = BuildTargetGroup.Android;   // OpenXR validation reads the selected tab
+                ConfigureAndroid(); ConfigureXRAndroid();
+                var quest = QuestPipeline();
+                GraphicsSettings.defaultRenderPipeline = quest; QualitySettings.renderPipeline = quest;
+                Directory.CreateDirectory("Builds/Quest");
+                var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
+                    scenes = new[]{ScenePath}, locationPathName = "Builds/Quest/VirtualHeritageKarnataka.apk",
+                    target = BuildTarget.Android, options = BuildOptions.None });
+                Directory.CreateDirectory("Artifacts");
+                File.WriteAllText("Artifacts/quest-build-result.txt",report.summary.result + "\nErrors: " + report.summary.totalErrors + "\nSize: " + report.summary.totalSize);
+                if (report.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("Quest build failed: " + report.summary.result);
+                Debug.Log("HERITAGE: Quest APK build succeeded.");
+            }
+            finally
+            {
+                GraphicsSettings.defaultRenderPipeline = desktop; QualitySettings.renderPipeline = desktopQuality;
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone,BuildTarget.StandaloneWindows64);
+                AssetDatabase.SaveAssets();
+            }
+        }
+
+        static void ConfigureAndroid()
+        {
+            PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android,"com.heritagestudio.virtualheritagekarnataka");
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android,ScriptingImplementation.IL2CPP);
+            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Android,ManagedStrippingLevel.Low);
+            PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+            PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel29;   // Quest 2, Pro, 3 and 3S
+            PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
+            PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.Android,false);
+            PlayerSettings.SetGraphicsAPIs(BuildTarget.Android,new[]{GraphicsDeviceType.Vulkan});
+            PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
+            PlayerSettings.Android.bundleVersionCode = Mathf.Max(PlayerSettings.Android.bundleVersionCode,1);
+            EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.ASTC;
+            EditorUserBuildSettings.buildAppBundle = false;
+        }
+
+        static void ConfigureXRAndroid()
+        {
+            const string path = "Assets/Heritage/Settings/XRGeneralSettings.asset";
+            var perTarget = AssetDatabase.LoadAssetAtPath<XRGeneralSettingsPerBuildTarget>(path);
+            if (!perTarget) throw new InvalidOperationException("XR settings are missing; run Heritage > Configure Project first.");
+            var target = BuildTargetGroup.Android;
+            if (!perTarget.HasSettingsForBuildTarget(target)) perTarget.CreateDefaultSettingsForBuildTarget(target);
+            if (!perTarget.HasManagerSettingsForBuildTarget(target)) perTarget.CreateDefaultManagerSettingsForBuildTarget(target);
+            var settings = perTarget.SettingsForBuildTarget(target);
+            settings.InitManagerOnStart = false;   // the app starts XR itself, after its input actions exist
+            if (!XRPackageMetadataStore.AssignLoader(settings.Manager,"UnityEngine.XR.OpenXR.OpenXRLoader",target))
+                throw new InvalidOperationException("Could not assign the OpenXR loader for Android.");
+            FeatureHelpers.RefreshFeatures(target);
+            var xr = OpenXRSettings.GetSettingsForBuildTargetGroup(target);
+            if (!xr) throw new InvalidOperationException("OpenXR settings for Android were not created.");
+            xr.renderMode = OpenXRSettings.RenderMode.SinglePassInstanced;   // multiview on Quest
+            foreach (var feature in xr.GetFeatures())
+            {
+                string name = feature.GetType().Name;
+                if (name == "MetaQuestFeature" || name.StartsWith("OculusTouch") || name.StartsWith("MetaQuestTouch")) feature.enabled = true;
+            }
+            EditorUtility.SetDirty(xr); EditorUtility.SetDirty(settings); EditorUtility.SetDirty(perTarget);
+            AssetDatabase.SaveAssets();
+        }
+
+        static UniversalRenderPipelineAsset QuestPipeline()
+        {
+            const string rendererPath = "Assets/Heritage/Settings/HeritageRendererQuest.asset", pipelinePath = "Assets/Heritage/Settings/HeritageURPQuest.asset";
+            var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(rendererPath);
+            if (!renderer) { renderer = ScriptableObject.CreateInstance<UniversalRendererData>(); AssetDatabase.CreateAsset(renderer,rendererPath); }
+            var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(pipelinePath);
+            if (!pipeline) { pipeline = UniversalRenderPipelineAsset.Create(renderer); AssetDatabase.CreateAsset(pipeline,pipelinePath); }
+            pipeline.msaaSampleCount = 4; pipeline.renderScale = 1; pipeline.shadowDistance = 22;
+            pipeline.mainLightShadowmapResolution = 2048; pipeline.shadowCascadeCount = 1; pipeline.supportsHDR = false;
+            using (var so = new SerializedObject(pipeline))
+            {
+                var mode = so.FindProperty("m_AdditionalLightsRenderingMode"); if (mode != null) mode.intValue = 1;
+                var limit = so.FindProperty("m_AdditionalLightsPerObjectLimit"); if (limit != null) limit.intValue = 4;
+                var soft = so.FindProperty("m_SoftShadowsSupported"); if (soft != null) soft.boolValue = false;
+                var depth = so.FindProperty("m_RequireDepthTexture"); if (depth != null) depth.boolValue = false;
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+            EditorUtility.SetDirty(pipeline); AssetDatabase.SaveAssets();
+            return pipeline;
+        }
+
         static UniversalRenderPipelineAsset WebPipeline()
         {
             const string rendererPath = "Assets/Heritage/Settings/HeritageRendererWeb.asset", pipelinePath = "Assets/Heritage/Settings/HeritageURPWeb.asset";

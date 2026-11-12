@@ -14,6 +14,8 @@ namespace VirtualHeritage
         public TempleCatalog Catalog { get; private set; }
         public HeritageRig rig;
         public HeritageUI ui;
+        public HeritageGuide guide;
+        public HeritageStudy Study;
         public int TempleIndex { get; private set; } = -1;
         public int TimelineIndex { get; private set; } = 3;
         public int SelectedIndex { get; private set; } = -1;
@@ -59,12 +61,14 @@ namespace VirtualHeritage
             wireMaterial = new Material(RayMaterial) { name = "Inspection wireframe", color = new Color(.3f,1,.8f) };
             SetupLighting();
             rig = new GameObject("Rig").AddComponent<HeritageRig>(); rig.transform.SetParent(transform,false); rig.Initialize(this);
-            HeritageAtmosphere.PostProcessing(rig.view);
+            if (Application.platform != RuntimePlatform.Android) HeritageAtmosphere.PostProcessing(rig.view); // a headset GPU cannot afford the full-screen grade
             rig.ForceDesktop = Array.Exists(Environment.GetCommandLineArgs(),a => a == "--desktop" || a == "--heritage-smoke");
 #if UNITY_WEBGL
             rig.ForceDesktop = true; // Browsers run the desktop experience; VR is the Windows build.
 #endif
             audioScene = new GameObject("Original spatial soundscape").AddComponent<HeritageAudio>(); audioScene.transform.SetParent(transform,false); audioScene.Initialize();
+            guide = new GameObject("Multilingual audio guide").AddComponent<HeritageGuide>(); guide.transform.SetParent(transform,false); guide.Initialize(this);
+            Study = new GameObject("Student study").AddComponent<HeritageStudy>(); Study.transform.SetParent(transform,false); Study.Initialize(this);
             ui = new GameObject("Heritage interface",typeof(RectTransform)).AddComponent<HeritageUI>(); ui.transform.SetParent(transform,false); ui.Initialize(this);
             BuildLocation(-1);
             if (!rig.ForceDesktop) StartCoroutine(StartXR());
@@ -151,6 +155,7 @@ namespace VirtualHeritage
             Debug.Log("HERITAGE: built location " + index + " in " + (Time.realtimeSinceStartup - started).ToString("0.00") + " s");
             if (index < 0) ui.ShowHub(); else ui.ShowTemple();
             Overview();
+            guide.OnLocation(index);
         }
 
         void BuildHub()
@@ -240,7 +245,7 @@ namespace VirtualHeritage
         public void SelectElement(int index,Transform selected = null)
         {
             if (CurrentTemple == null || index < 0 || index >= elements.Count || Transitioning) return;
-            CloseInspection(false); SelectedIndex = index; ui.ShowElement(); PlayClick();
+            CloseInspection(false); SelectedIndex = index; ui.ShowElement(); PlayClick(); guide.PlayElement(index);
         }
 
         public void ClearSelection() { CloseInspection(false); SelectedIndex = -1; ui.ShowTemple(); }

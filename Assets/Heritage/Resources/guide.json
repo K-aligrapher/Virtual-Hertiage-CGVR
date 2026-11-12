@@ -1,0 +1,174 @@
+{
+  "languages": [
+    { "code": "en", "name": "English", "voice": "en-IN-NeerjaNeural" },
+    { "code": "hi", "name": "Hindi", "voice": "hi-IN-SwaraNeural" },
+    { "code": "kn", "name": "Kannada", "voice": "kn-IN-SapnaNeural" }
+  ],
+  "temples": [
+    {
+      "id": "belur",
+      "entries": [
+        {
+          "key": "welcome",
+          "en": "Welcome to the Chennakeshava temple at Belur. It was founded in 1117 CE, in the reign of the Hoysala king Vishnuvardhana. What you see is a simplified study, but the ideas in the stonework are real. Walk forward to explore.",
+          "hi": "बेलूर के चेन्नकेशव मंदिर में आपका स्वागत है। इसकी स्थापना 1117 ईस्वी में होयसल राजा विष्णुवर्धन के शासनकाल में हुई थी। आप जो देख रहे हैं वह एक सरल अध्ययन मॉडल है, पर पत्थर की कारीगरी के विचार असली हैं। आगे बढ़कर घूमकर देखिए।",
+          "kn": "ಬೇಲೂರಿನ ಚೆನ್ನಕೇಶವ ದೇವಾಲಯಕ್ಕೆ ಸ್ವಾಗತ. ಇದನ್ನು ಕ್ರಿ.ಶ. 1117ರಲ್ಲಿ ಹೊಯ್ಸಳ ರಾಜ ವಿಷ್ಣುವರ್ಧನನ ಆಳ್ವಿಕೆಯಲ್ಲಿ ಸ್ಥಾಪಿಸಲಾಯಿತು. ನೀವು ನೋಡುತ್ತಿರುವುದು ಸರಳೀಕೃತ ಅಧ್ಯಯನ ಮಾದರಿ, ಆದರೆ ಕಲ್ಲಿನ ಕೆಲಸದ ಆಲೋಚನೆಗಳು ನಿಜವಾದವು. ಮುಂದೆ ನಡೆದು ಅನ್ವೇಷಿಸಿ."
+        },
+        {
+          "key": "courtyard",
+          "en": "You are in the courtyard. Hoysala temples stand on a raised platform called a jagati, and visitors walk around them. Hoysala builders worked mostly in soapstone, a fine-grained stone that carves beautifully.",
+          "hi": "आप प्रांगण में हैं। होयसल मंदिर जगती नामक ऊँचे चबूतरे पर बने होते हैं, और लोग उनकी परिक्रमा करते हैं। होयसल शिल्पकार ज़्यादातर सोपस्टोन यानी साबुनी पत्थर में काम करते थे, यह महीन दानों वाला पत्थर है जिस पर सुंदर नक्काशी होती है।",
+          "kn": "ನೀವು ಅಂಗಳದಲ್ಲಿದ್ದೀರಿ. ಹೊಯ್ಸಳ ದೇವಾಲಯಗಳು ಜಗತಿ ಎಂಬ ಎತ್ತರದ ವೇದಿಕೆಯ ಮೇಲೆ ನಿಂತಿರುತ್ತವೆ, ಮತ್ತು ಭಕ್ತರು ಅದರ ಸುತ್ತ ಪ್ರದಕ್ಷಿಣೆ ಹಾಕುತ್ತಾರೆ. ಹೊಯ್ಸಳ ಶಿಲ್ಪಿಗಳು ಹೆಚ್ಚಾಗಿ ಬಳಪದ ಕಲ್ಲಿನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದರು, ಇದು ಸೂಕ್ಷ್ಮ ಕಣಗಳ ಕಲ್ಲು, ಇದರಲ್ಲಿ ಸುಂದರ ಕೆತ್ತನೆ ಸಾಧ್ಯ."
+        },
+        {
+          "key": "steps",
+          "en": "These steps lead up to the jagati, the raised platform. Climbing them separates everyday ground from the sacred space, and lets worshippers walk around the temple in procession.",
+          "hi": "ये सीढ़ियाँ जगती यानी ऊँचे चबूतरे तक ले जाती हैं। ऊपर चढ़ने से रोज़मर्रा की ज़मीन और पवित्र स्थान के बीच का अंतर महसूस होता है, और भक्त मंदिर की परिक्रमा कर पाते हैं।",
+          "kn": "ಈ ಮೆಟ್ಟಿಲುಗಳು ಜಗತಿಯೆಂಬ ಎತ್ತರದ ವೇದಿಕೆಗೆ ಕರೆದೊಯ್ಯುತ್ತವೆ. ಹತ್ತುವುದರಿಂದ ದೈನಂದಿನ ನೆಲ ಮತ್ತು ಪವಿತ್ರ ಸ್ಥಳದ ನಡುವಿನ ವ್ಯತ್ಯಾಸ ತಿಳಿಯುತ್ತದೆ, ಮತ್ತು ಭಕ್ತರು ದೇವಾಲಯದ ಸುತ್ತ ಪ್ರದಕ್ಷಿಣೆ ಮಾಡಬಹುದು."
+        },
+        {
+          "key": "platform",
+          "en": "This is the stellate, or star-shaped, platform. Its edges project and recede in a steady rhythm, which makes lively patterns of light and shadow. The pattern here is simplified.",
+          "hi": "यह तारे जैसे आकार का चबूतरा है। इसके किनारे आगे और पीछे होते हुए एक लय बनाते हैं, जिससे धूप और छाया का सुंदर खेल बनता है। यहाँ यह आकार सरल रूप में दिखाया गया है।",
+          "kn": "ಇದು ನಕ್ಷತ್ರಾಕಾರದ ವೇದಿಕೆ. ಇದರ ಅಂಚುಗಳು ಮುಂದೆ ಹಿಂದೆ ಸರಿಯುತ್ತಾ ಲಯಬದ್ಧ ಆಕಾರ ಮತ್ತು ಬೆಳಕು ನೆರಳಿನ ಸೊಗಸನ್ನು ಸೃಷ್ಟಿಸುತ್ತವೆ. ಇಲ್ಲಿ ಈ ಆಕಾರವನ್ನು ಸರಳ ರೂಪದಲ್ಲಿ ತೋರಿಸಲಾಗಿದೆ."
+        },
+        {
+          "key": "hall",
+          "en": "You are inside the pillared hall, called a mandapa. Many Hoysala columns are turned on a lathe, which gives them polished, rounded profiles. Look at the pierced stone screens: they let in light and breeze.",
+          "hi": "आप स्तंभों वाले सभामंडप, यानी मंडप में हैं। कई होयसल स्तंभ खराद पर गढ़े गए हैं, इसलिए उनकी बनावट गोल और चिकनी होती है। पत्थर की जालियों को देखिए, इनसे रोशनी और हवा भीतर आती है।",
+          "kn": "ನೀವು ಕಂಬಗಳ ಸಭಾಮಂಟಪದ ಒಳಗಿದ್ದೀರಿ. ಅನೇಕ ಹೊಯ್ಸಳ ಕಂಬಗಳನ್ನು ಕಡೆತದ ಯಂತ್ರದಲ್ಲಿ ತಿರುಗಿಸಿ ರೂಪಿಸಲಾಗಿದೆ, ಹೀಗಾಗಿ ಅವು ದುಂಡಗೆ ನುಣುಪಾಗಿವೆ. ಕಲ್ಲಿನ ಜಾಲಂದ್ರಗಳನ್ನು ನೋಡಿ, ಅವು ಬೆಳಕು ಮತ್ತು ಗಾಳಿಯನ್ನು ಒಳಗೆ ಬಿಡುತ್ತವೆ."
+        },
+        {
+          "key": "sanctum",
+          "en": "This small chamber is the garbhagriha, the sanctum, where the main image is enshrined. In this model it is left empty, with only lamps and flowers, out of respect. Real shrines are places of living worship.",
+          "hi": "यह छोटा कक्ष गर्भगृह है, जहाँ मुख्य मूर्ति प्रतिष्ठित होती है। सम्मान के कारण इस मॉडल में इसे खाली रखा गया है, केवल दीपक और फूल हैं। असली मंदिर आज भी जीवित पूजा के स्थान हैं।",
+          "kn": "ಈ ಪುಟ್ಟ ಕೋಣೆ ಗರ್ಭಗುಡಿ, ಮುಖ್ಯ ವಿಗ್ರಹ ಪ್ರತಿಷ್ಠಾಪನೆಯಾಗುವ ಸ್ಥಳ. ಗೌರವದ ಕಾರಣ ಈ ಮಾದರಿಯಲ್ಲಿ ಇದನ್ನು ಖಾಲಿ ಬಿಡಲಾಗಿದ್ದು, ದೀಪಗಳು ಮತ್ತು ಹೂವುಗಳು ಮಾತ್ರ ಇವೆ. ನಿಜವಾದ ದೇವಾಲಯಗಳು ಇಂದಿಗೂ ಜೀವಂತ ಪೂಜೆಯ ಸ್ಥಳಗಳು."
+        },
+        {
+          "key": "el0",
+          "en": "The lathe-turned pillar. Circular mouldings and polished shafts distinguish many Hoysala columns. This simplified study lets you see the changing profile from every angle.",
+          "hi": "खराद पर बना स्तंभ। गोल मोल्डिंग और चिकने स्तंभ-दंड कई होयसल खंभों की पहचान हैं। यह सरल अध्ययन मॉडल आपको हर कोण से इसकी बदलती बनावट देखने देता है।",
+          "kn": "ಕಡೆದ ಕಂಬ. ದುಂಡನೆಯ ಉಬ್ಬು ಪಟ್ಟಿಗಳು ಮತ್ತು ನುಣುಪಾದ ದಂಡಗಳು ಅನೇಕ ಹೊಯ್ಸಳ ಕಂಬಗಳ ವೈಶಿಷ್ಟ್ಯ. ಈ ಸರಳ ಅಧ್ಯಯನ ಮಾದರಿಯಲ್ಲಿ ಪ್ರತಿ ಕೋನದಿಂದ ಅದರ ಬದಲಾಗುವ ರೂಪವನ್ನು ನೋಡಬಹುದು."
+        },
+        {
+          "key": "el1",
+          "en": "The stellate platform. Projecting and receding edges create a rhythmic footprint, and the raised platform provides a route around the shrine. This model abstracts the plan; it is not a survey.",
+          "hi": "तारकाकार चबूतरा। आगे-पीछे निकलते किनारे एक लयबद्ध आकार बनाते हैं, और ऊँचा चबूतरा मंदिर की परिक्रमा का रास्ता देता है। यह मॉडल योजना का सार है, सर्वेक्षण की सटीक नकल नहीं।",
+          "kn": "ನಕ್ಷತ್ರಾಕಾರದ ವೇದಿಕೆ. ಮುಂದೆ ಹಿಂದೆ ಚಾಚುವ ಅಂಚುಗಳು ಲಯಬದ್ಧ ಆಕಾರ ಸೃಷ್ಟಿಸುತ್ತವೆ, ಮತ್ತು ಎತ್ತರದ ವೇದಿಕೆ ದೇವಾಲಯದ ಸುತ್ತ ಸಾಗಲು ದಾರಿ ನೀಡುತ್ತದೆ. ಈ ಮಾದರಿ ಯೋಜನೆಯ ಸಾರ, ನಿಖರ ಸಮೀಕ್ಷೆಯಲ್ಲ."
+        },
+        {
+          "key": "el2",
+          "en": "The ornamental frieze. Stacked carved bands articulate Hoysala exteriors. Here, repeating geometric motifs stand in for the far more intricate carvings of the real monument.",
+          "hi": "अलंकृत पट्टी। परत दर परत उकेरी गई पट्टियाँ होयसल मंदिरों की बाहरी दीवारों को सजाती हैं। यहाँ दोहराई जाने वाली ज्यामितीय आकृतियाँ असली स्मारक की कहीं अधिक जटिल नक्काशी का प्रतीक हैं।",
+          "kn": "ಅಲಂಕೃತ ಪಟ್ಟಿ. ಪದರ ಪದರವಾಗಿ ಕೆತ್ತಿದ ಪಟ್ಟಿಗಳು ಹೊಯ್ಸಳ ದೇವಾಲಯಗಳ ಹೊರಗೋಡೆಗಳನ್ನು ಅಲಂಕರಿಸುತ್ತವೆ. ಇಲ್ಲಿ ಪುನರಾವರ್ತಿತ ಜ್ಯಾಮಿತೀಯ ಆಕೃತಿಗಳು ನಿಜವಾದ ಸ್ಮಾರಕದ ಅತಿ ಸೂಕ್ಷ್ಮ ಕೆತ್ತನೆಗಳಿಗೆ ಪ್ರತೀಕ."
+        }
+      ]
+    },
+    {
+      "id": "halebidu",
+      "entries": [
+        {
+          "key": "welcome",
+          "en": "Welcome to the Hoysaleswara temple at Halebidu, once a Hoysala capital. It is known for twin shrines on one shared platform. Belur and Halebidu together form the UNESCO World Heritage listing called the Sacred Ensembles of the Hoysalas, inscribed in 2023.",
+          "hi": "हलेबीडु के होयसलेश्वर मंदिर में आपका स्वागत है, जो कभी होयसल राजधानी था। यह एक ही चबूतरे पर बने जुड़वाँ मंदिरों के लिए जाना जाता है। बेलूर और हलेबीडु मिलकर यूनेस्को विश्व धरोहर सूची के होयसलों के पवित्र समूह का हिस्सा हैं, जिसे 2023 में अंकित किया गया।",
+          "kn": "ಹಳೇಬೀಡಿನ ಹೊಯ್ಸಳೇಶ್ವರ ದೇವಾಲಯಕ್ಕೆ ಸ್ವಾಗತ. ಇದು ಒಂದು ಕಾಲದಲ್ಲಿ ಹೊಯ್ಸಳರ ರಾಜಧಾನಿಯಾಗಿತ್ತು. ಒಂದೇ ವೇದಿಕೆಯ ಮೇಲಿರುವ ಅವಳಿ ದೇವಾಲಯಗಳಿಗಾಗಿ ಇದು ಪ್ರಸಿದ್ಧ. ಬೇಲೂರು ಮತ್ತು ಹಳೇಬೀಡು ಸೇರಿ ಹೊಯ್ಸಳರ ಪವಿತ್ರ ಸಮೂಹಗಳೆಂಬ ಯುನೆಸ್ಕೋ ವಿಶ್ವ ಪರಂಪರೆಯ ಪಟ್ಟಿಯ ಭಾಗವಾಗಿವೆ; ಇದನ್ನು 2023ರಲ್ಲಿ ಸೇರಿಸಲಾಯಿತು."
+        },
+        {
+          "key": "courtyard",
+          "en": "In the courtyard, notice the two sanctuaries side by side on one raised platform. The temple is meant to be seen from every side.",
+          "hi": "प्रांगण में देखिए, दो गर्भगृह एक ही ऊँचे चबूतरे पर साथ-साथ बने हैं। इस मंदिर को हर तरफ़ से देखने के लिए बनाया गया है।",
+          "kn": "ಅಂಗಳದಲ್ಲಿ ನೋಡಿ, ಎರಡು ಗರ್ಭಗುಡಿಗಳು ಒಂದೇ ಎತ್ತರದ ವೇದಿಕೆಯ ಮೇಲೆ ಅಕ್ಕಪಕ್ಕದಲ್ಲಿವೆ. ಈ ದೇವಾಲಯವನ್ನು ಎಲ್ಲ ಕಡೆಯಿಂದ ನೋಡಲೆಂದು ರೂಪಿಸಲಾಗಿದೆ."
+        },
+        {
+          "key": "steps",
+          "en": "Two separate flights of steps lead up to the shared platform, one for each shrine.",
+          "hi": "दो अलग सीढ़ियाँ साझा चबूतरे तक ले जाती हैं, हर मंदिर के लिए एक।",
+          "kn": "ಎರಡು ಪ್ರತ್ಯೇಕ ಮೆಟ್ಟಿಲುಗಳು ಹಂಚಿಕೆಯ ವೇದಿಕೆಗೆ ಕರೆದೊಯ್ಯುತ್ತವೆ, ಪ್ರತಿ ದೇವಾಲಯಕ್ಕೆ ಒಂದು."
+        },
+        {
+          "key": "platform",
+          "en": "This shared platform has a star-shaped outline for each shrine, and the two overlap. Walk along its edge and watch how the projections catch the light.",
+          "hi": "इस साझा चबूतरे में हर मंदिर के लिए तारे जैसा आकार है, और दोनों आपस में मिलते हैं। इसके किनारे पर चलिए और देखिए कि उभार रोशनी को कैसे पकड़ते हैं।",
+          "kn": "ಈ ಹಂಚಿಕೆಯ ವೇದಿಕೆಯಲ್ಲಿ ಪ್ರತಿ ದೇವಾಲಯಕ್ಕೂ ನಕ್ಷತ್ರದಂತಹ ಆಕಾರವಿದೆ, ಮತ್ತು ಎರಡೂ ಒಂದಕ್ಕೊಂದು ಸೇರುತ್ತವೆ. ಅದರ ಅಂಚಿನಲ್ಲಿ ನಡೆದು, ಚಾಚುವ ಭಾಗಗಳು ಬೆಳಕನ್ನು ಹೇಗೆ ಹಿಡಿಯುತ್ತವೆ ಎಂದು ನೋಡಿ."
+        },
+        {
+          "key": "hall",
+          "en": "This long hall, a mandapa, joins the two shrines. The columns are moulded with alternating discs, necks and capitals. The pierced stone screens between them filter light across the floor.",
+          "hi": "यह लंबा सभामंडप दोनों मंदिरों को जोड़ता है। स्तंभों पर बारी-बारी से चकतियाँ, गर्दन और शीर्ष गढ़े गए हैं। बीच की पत्थर की जालियाँ फर्श पर रोशनी बिखेरती हैं।",
+          "kn": "ಈ ಉದ್ದನೆಯ ಸಭಾಮಂಟಪ ಎರಡೂ ದೇವಾಲಯಗಳನ್ನು ಜೋಡಿಸುತ್ತದೆ. ಕಂಬಗಳಲ್ಲಿ ಒಂದಾದ ಮೇಲೊಂದು ಬಿಲ್ಲೆಗಳು, ಕತ್ತು ಮತ್ತು ಕಿರೀಟಗಳಿವೆ. ನಡುವಿನ ಕಲ್ಲಿನ ಜಾಲಂದ್ರಗಳು ನೆಲದ ಮೇಲೆ ಬೆಳಕನ್ನು ಹರಡುತ್ತವೆ."
+        },
+        {
+          "key": "sanctum",
+          "en": "This is one of the two sanctums, the garbhagriha, where the main image is enshrined. In this model it is left empty, with only lamps and flowers, out of respect.",
+          "hi": "यह दोनों गर्भगृहों में से एक है, जहाँ मुख्य मूर्ति प्रतिष्ठित होती है। सम्मान के कारण इस मॉडल में इसे खाली रखा गया है, केवल दीपक और फूल हैं।",
+          "kn": "ಇದು ಎರಡು ಗರ್ಭಗುಡಿಗಳಲ್ಲಿ ಒಂದು, ಮುಖ್ಯ ವಿಗ್ರಹ ಪ್ರತಿಷ್ಠಾಪನೆಯಾಗುವ ಸ್ಥಳ. ಗೌರವದ ಕಾರಣ ಈ ಮಾದರಿಯಲ್ಲಿ ಇದನ್ನು ಖಾಲಿ ಬಿಡಲಾಗಿದ್ದು, ದೀಪಗಳು ಮತ್ತು ಹೂವುಗಳು ಮಾತ್ರ ಇವೆ."
+        },
+        {
+          "key": "el0",
+          "en": "The moulded pillar. Alternating discs, necks and capitals give the column its measured silhouette. Rotate this study to see how a profile becomes a surface of revolution.",
+          "hi": "ढला हुआ स्तंभ। बारी-बारी से चकतियाँ, गर्दन और शीर्ष इसकी नपी-तुली आकृति बनाते हैं। इसे घुमाकर देखिए कि प्रोफ़ाइल और घुमाव से बनी सतह का आपस में क्या संबंध है।",
+          "kn": "ಕಡೆದ ಕಂಬ. ಒಂದಾದ ಮೇಲೊಂದು ಬಿಲ್ಲೆಗಳು, ಕತ್ತು ಮತ್ತು ಕಿರೀಟ ಇದಕ್ಕೆ ಅಳತೆಯ ಆಕಾರ ನೀಡುತ್ತವೆ. ಇದನ್ನು ತಿರುಗಿಸಿ ನೋಡಿ, ಪ್ರೊಫೈಲ್ ಮತ್ತು ಸುತ್ತುವ ಮೇಲ್ಮೈ ನಡುವಿನ ಸಂಬಂಧ ತಿಳಿಯುತ್ತದೆ."
+        },
+        {
+          "key": "el1",
+          "en": "The paired shrine study. Hoysaleswara is known for its paired sanctuaries. These low, stepped masses are a schematic study of that relationship, not a reconstruction of lost roof forms.",
+          "hi": "जुड़वाँ मंदिर का अध्ययन। होयसलेश्वर अपने जोड़ीदार गर्भगृहों के लिए जाना जाता है। ये नीची, सीढ़ीदार आकृतियाँ इस संबंध का सरल अध्ययन हैं, खोई हुई छतों का पुनर्निर्माण नहीं।",
+          "kn": "ಅವಳಿ ದೇವಾಲಯದ ಅಧ್ಯಯನ. ಹೊಯ್ಸಳೇಶ್ವರ ತನ್ನ ಜೋಡಿ ಗರ್ಭಗುಡಿಗಳಿಗೆ ಪ್ರಸಿದ್ಧ. ಈ ಕೆಳಮಟ್ಟದ ಹಂತಹಂತದ ಆಕೃತಿಗಳು ಆ ಸಂಬಂಧದ ಸರಳ ಅಧ್ಯಯನ, ಕಳೆದುಹೋದ ಮೇಲ್ಛಾವಣಿಗಳ ಪುನರ್‌ನಿರ್ಮಾಣವಲ್ಲ."
+        },
+        {
+          "key": "el2",
+          "en": "The relief register. Horizontal registers organise the richly carved exterior. Abstract repeating motifs show their rhythm without claiming to reproduce specific sacred figures.",
+          "hi": "उकेरी पट्टियाँ। क्षैतिज पट्टियाँ भव्य नक्काशीदार बाहरी दीवार को व्यवस्थित करती हैं। दोहराई जाने वाली सरल आकृतियाँ किसी विशेष पवित्र मूर्ति की नकल किए बिना इसकी लय दिखाती हैं।",
+          "kn": "ಕೆತ್ತನೆಯ ಪಟ್ಟಿಗಳು. ಅಡ್ಡ ಸಾಲುಗಳು ಸಮೃದ್ಧ ಕೆತ್ತನೆಯ ಹೊರಮೈಯನ್ನು ವ್ಯವಸ್ಥಿತಗೊಳಿಸುತ್ತವೆ. ಪುನರಾವರ್ತಿತ ಸರಳ ಆಕೃತಿಗಳು ನಿರ್ದಿಷ್ಟ ಪವಿತ್ರ ಮೂರ್ತಿಗಳನ್ನು ಅನುಕರಿಸದೆ ಅದರ ಲಯವನ್ನು ತೋರಿಸುತ್ತವೆ."
+        }
+      ]
+    },
+    {
+      "id": "hampi",
+      "entries": [
+        {
+          "key": "welcome",
+          "en": "Welcome to the Virupaksha temple at Hampi, in the old capital of the Vijayanagara Empire, which flourished from the fourteenth to the sixteenth century. The sacred site is older than the empire, and its buildings reflect many phases. Hampi became a UNESCO World Heritage site in 1986.",
+          "hi": "हम्पी के विरुपाक्ष मंदिर में आपका स्वागत है, जो विजयनगर साम्राज्य की पुरानी राजधानी में है, जो चौदहवीं से सोलहवीं सदी तक फला-फूला। यह पवित्र स्थान साम्राज्य से भी पुराना है, और इसकी इमारतें कई चरणों में बनी हैं। हम्पी को 1986 में यूनेस्को विश्व धरोहर घोषित किया गया।",
+          "kn": "ಹಂಪಿಯ ವಿರೂಪಾಕ್ಷ ದೇವಾಲಯಕ್ಕೆ ಸ್ವಾಗತ. ಇದು ಹದಿನಾಲ್ಕರಿಂದ ಹದಿನಾರನೇ ಶತಮಾನದವರೆಗೆ ವೈಭವದಿಂದ ಮೆರೆದ ವಿಜಯನಗರ ಸಾಮ್ರಾಜ್ಯದ ಹಳೆಯ ರಾಜಧಾನಿಯಲ್ಲಿದೆ. ಈ ಪವಿತ್ರ ಸ್ಥಳ ಸಾಮ್ರಾಜ್ಯಕ್ಕಿಂತ ಹಳೆಯದು, ಮತ್ತು ಇದರ ಕಟ್ಟಡಗಳು ಹಲವು ಹಂತಗಳಲ್ಲಿ ನಿರ್ಮಾಣವಾದವು. ಹಂಪಿಯನ್ನು 1986ರಲ್ಲಿ ಯುನೆಸ್ಕೋ ವಿಶ್ವ ಪರಂಪರೆಯ ತಾಣವೆಂದು ಘೋಷಿಸಲಾಯಿತು."
+        },
+        {
+          "key": "court",
+          "en": "This is the temple courtyard. Rows of granite columns organise covered spaces where people gather. Hard granite gives Vijayanagara architecture its bold, geometric character.",
+          "hi": "यह मंदिर का प्रांगण है। ग्रेनाइट के स्तंभों की कतारें ढके हुए स्थान बनाती हैं जहाँ लोग एकत्र होते थे। कठोर ग्रेनाइट विजयनगर की वास्तुकला को उसका सुदृढ़ और ज्यामितीय रूप देता है।",
+          "kn": "ಇದು ದೇವಾಲಯದ ಅಂಗಳ. ಗ್ರಾನೈಟ್ ಕಂಬಗಳ ಸಾಲುಗಳು ಜನರು ಸೇರುವ ಮುಚ್ಚಿದ ಸ್ಥಳಗಳನ್ನು ರೂಪಿಸುತ್ತವೆ. ಗಟ್ಟಿಯಾದ ಗ್ರಾನೈಟ್ ವಿಜಯನಗರ ವಾಸ್ತುಶಿಲ್ಪಕ್ಕೆ ದೃಢವಾದ, ಜ್ಯಾಮಿತೀಯ ರೂಪ ನೀಡುತ್ತದೆ."
+        },
+        {
+          "key": "gopuram",
+          "en": "Ahead rises the gopuram, a tiered temple entrance tower. It marks the threshold of the temple, tapering upward in repeating levels. This scaled study abstracts its massing.",
+          "hi": "सामने गोपुरम है, मंदिर का स्तरों वाला प्रवेश-द्वार। यह मंदिर की दहलीज़ को चिह्नित करता है और ऊपर की ओर दोहराए जाते स्तरों में सँकरा होता जाता है। यह मॉडल उसके आकार का सरल रूप है।",
+          "kn": "ಮುಂದೆ ಗೋಪುರ ಎದ್ದಿದೆ, ದೇವಾಲಯದ ಹಂತಹಂತದ ಪ್ರವೇಶ ಗೋಪುರ. ಇದು ದೇವಾಲಯದ ಹೊಸ್ತಿಲನ್ನು ಗುರುತಿಸುತ್ತದೆ ಮತ್ತು ಪುನರಾವರ್ತಿತ ಹಂತಗಳಲ್ಲಿ ಮೇಲೆ ಮೇಲೆ ಕಿರಿದಾಗುತ್ತದೆ. ಈ ಮಾದರಿ ಅದರ ಆಕಾರದ ಸರಳ ರೂಪ."
+        },
+        {
+          "key": "pavilion",
+          "en": "These pavilions have projecting roof edges that cast deep shadows. The repeated supports tie the structure into one continuous space.",
+          "hi": "इन मंडपों की छतों के किनारे बाहर निकले हैं, जो गहरी छाया डालते हैं। दोहराए गए स्तंभ पूरी रचना को एक सतत स्थान में बाँध देते हैं।",
+          "kn": "ಈ ಮಂಟಪಗಳ ಮೇಲ್ಛಾವಣಿಯ ಅಂಚುಗಳು ಹೊರಚಾಚಿ ಗಾಢ ನೆರಳು ಬೀಳಿಸುತ್ತವೆ. ಪುನರಾವರ್ತಿತ ಕಂಬಗಳು ಇಡೀ ರಚನೆಯನ್ನು ಒಂದೇ ನಿರಂತರ ಸ್ಥಳವಾಗಿ ಬೆಸೆಯುತ್ತವೆ."
+        },
+        {
+          "key": "el0",
+          "en": "The mandapa column. Stone columns organise covered gathering spaces. This geometric study emphasises the base, shaft, capital and the beam it supports.",
+          "hi": "मंडप स्तंभ। पत्थर के स्तंभ ढके हुए सभा-स्थल बनाते हैं। यह ज्यामितीय अध्ययन आधार, दंड, शीर्ष और उसके ऊपर की धरन पर ज़ोर देता है।",
+          "kn": "ಮಂಟಪದ ಕಂಬ. ಕಲ್ಲಿನ ಕಂಬಗಳು ಮುಚ್ಚಿದ ಸಭಾ ಸ್ಥಳಗಳನ್ನು ರೂಪಿಸುತ್ತವೆ. ಈ ಜ್ಯಾಮಿತೀಯ ಅಧ್ಯಯನ ಪಾದ, ದಂಡ, ಕಿರೀಟ ಮತ್ತು ಅದರ ಮೇಲಿನ ತೊಲೆಗೆ ಒತ್ತು ನೀಡುತ್ತದೆ."
+        },
+        {
+          "key": "el1",
+          "en": "The gopuram study. A gopuram marks a temple entrance with a tapering, tiered silhouette. This scaled model abstracts the tower's massing and repeated architectural details.",
+          "hi": "गोपुरम का अध्ययन। गोपुरम मंदिर के प्रवेश को दर्शाने वाला स्तरीय, ऊपर सँकरा होता मीनार-द्वार है। यह छोटा मॉडल उसके आकार और दोहराए जाने वाले विवरणों का सार है।",
+          "kn": "ಗೋಪುರದ ಅಧ್ಯಯನ. ಗೋಪುರ ದೇವಾಲಯದ ಪ್ರವೇಶವನ್ನು ಸೂಚಿಸುವ, ಹಂತಹಂತವಾಗಿ ಮೇಲೆ ಕಿರಿದಾಗುವ ಗೋಪುರ. ಈ ಚಿಕ್ಕ ಮಾದರಿ ಅದರ ರೂಪ ಮತ್ತು ಪುನರಾವರ್ತಿತ ವಿವರಗಳ ಸಾರ."
+        },
+        {
+          "key": "el2",
+          "en": "The pavilion cornice. Projecting roof edges cast a clear shadow over a pavilion. Their repetition ties individual supports into one continuous architectural space.",
+          "hi": "मंडप का कंगूरा। छत के बाहर निकले किनारे मंडप पर साफ़ छाया डालते हैं। उनकी पुनरावृत्ति अलग-अलग स्तंभों को एक सतत स्थापत्य-स्थान में जोड़ देती है।",
+          "kn": "ಮಂಟಪದ ಕೊಂಬು ಅಂಚು. ಛಾವಣಿಯ ಹೊರಚಾಚಿದ ಅಂಚುಗಳು ಮಂಟಪದ ಮೇಲೆ ಸ್ಪಷ್ಟ ನೆರಳು ಬೀಳಿಸುತ್ತವೆ. ಅವುಗಳ ಪುನರಾವರ್ತನೆ ಬೇರೆ ಬೇರೆ ಕಂಬಗಳನ್ನು ಒಂದೇ ನಿರಂತರ ವಾಸ್ತು ಸ್ಥಳವಾಗಿ ಬೆಸೆಯುತ್ತದೆ."
+        }
+      ]
+    }
+  ]
+}

@@ -80,8 +80,8 @@ namespace VirtualHeritage
             string key = pattern + "/" + seed;
             if (textures.TryGetValue(key, out albedo) && textures.TryGetValue(key + "/n", out normal)) return;
             int size = pattern == Pattern.Ashlar || pattern == Pattern.Paving || pattern == Pattern.Granite || pattern == Pattern.Turf ? 512 : 256;
-#if UNITY_WEBGL
-            size /= 2; // Browser builds generate on a single thread; smaller maps keep the first load quick.
+#if UNITY_WEBGL || UNITY_ANDROID
+            size /= 2; // Browser and headset builds generate on a weaker CPU; smaller maps keep the first load quick.
 #endif
             int cols = pattern == Pattern.Ashlar ? 4 : 2, rows = pattern == Pattern.Ashlar ? 3 : 2;
             bool blocks = pattern == Pattern.Ashlar || pattern == Pattern.Paving;

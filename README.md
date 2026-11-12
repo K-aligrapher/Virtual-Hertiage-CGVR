@@ -52,6 +52,8 @@
 | Platform | How | Notes |
 | --- | --- | --- |
 | 🌐 **Browser** | Open **[virtual-heritage-karnataka-cgvr.vercel.app](https://virtual-heritage-karnataka-cgvr.vercel.app)** | Desktop Chrome or Edge. About 50 MB on first load, then cached. Lighter effects, no VR. |
+| 📱 **Phone / tablet browser** | Open the same link in Chrome or Safari, landscape | Touch controls: drag the left side to walk, the right side to look, tap rings to teleport, **Menu** hides the panel. Mobile WebGL is memory-limited, so try it on your phone before relying on it. |
+| 🥽 **Meta Quest, no PC** | Install `Builds/Quest/VirtualHeritageKarnataka.apk` on the headset (see [Quest standalone](#-meta-quest-standalone-no-pc)) | Runs on the headset itself, with the audio guide and student study. |
 | 🖥️ **Windows desktop** | Build, then double-click `Launch Desktop.cmd` | Full quality, no headset needed. |
 | 🥽 **PC VR** | Start your OpenXR runtime, connect the headset, then run `Launch VR.cmd` | Quest Link / Air Link, Index, Vive, Windows MR. |
 | 🛠️ **Unity editor** | Open the folder in Unity Hub, open `Assets/Heritage/Scenes/Heritage.unity`, press Play | `Heritage > Configure Project` recreates the scene and settings. |
@@ -69,6 +71,31 @@
 | Timeline | Drag the slider | Aim + drag with trigger |
 | Back / collection | **Esc** / **H** | Collection button or left menu button |
 
+## 🔊 Multilingual audio guide
+
+As you walk, the guide narrates where you are (courtyard, steps, platform, pillared hall, sanctum) and any architectural element you select, in **English, Hindi or Kannada**. Use the **Guide on/off**, **language** and **Replay** buttons at the bottom of the panel. English captions appear on screen on desktop and phone.
+
+* The text is in `Assets/Heritage/Resources/guide.json`. The audio is pre-generated neural speech bundled with the app (`Resources/Guide/<lang>/`), so it works offline in the browser, on desktop and on a standalone Quest.
+* To edit or add a language, change `guide.json` and run `python Tools/generate_guide_audio.py` (needs `pip install edge-tts` and internet). Have a native speaker review the Hindi and Kannada text before using it formally.
+
+## 🎓 Student study
+
+**Student study** (on the gallery panel) runs a pre/post knowledge test, simulator-sickness questionnaires, in-session comfort checks and experience ratings, then exports a CSV per participant. `Tools/analyze_study.py` summarises them. Protocol, measures and analysis: [docs/USER_STUDY.md](docs/USER_STUDY.md).
+
+## 🥽 Meta Quest standalone (no PC)
+
+The Quest build is a normal Android APK with OpenXR that runs on the headset on its own.
+
+```powershell
+# One-time: Unity Hub > Installs > 6000.6.1f1 > Add modules > Android Build Support (with OpenJDK, SDK and NDK)
+& "C:\Program Files\Unity\Hub\Editor\6000.6.1f1\Editor\Unity.exe" -batchmode -quit -projectPath . -executeMethod VirtualHeritage.Editor.HeritageProject.BuildQuest
+# or the Unity menu: Heritage > Build Quest (Android APK)
+```
+
+The APK is written to `Builds/Quest/VirtualHeritageKarnataka.apk` (Android 10+, ARM64, Vulkan, Quest 2, Pro, 3 and 3S). It uses a lighter render pipeline than the PC build and skips the full-screen colour grade.
+
+Getting it onto a headset without a PC: turn on **Developer Mode** (Meta Horizon phone app, then Menu > Devices), then use **SideQuest** or **Meta Quest Developer Hub** on a phone or laptop to install the APK once. After that the app launches from *Unknown Sources* in the headset's library, with no cable and no PC running. Study results are saved on the headset (see [docs/USER_STUDY.md](docs/USER_STUDY.md)).
+
 ## 🧱 Tech stack
 
 | Layer | Technology |
@@ -80,7 +107,7 @@
 | UI | uGUI: screen-space on desktop, world-space panel in VR |
 | Content | A JSON catalog (`temples.json`) of temples, elements, timelines and confidence labels |
 | Procedural art | Custom `MeshBuilder` (boxes, lathes, stellate prisms, ellipsoids, icospheres) and tileable FBM noise for albedo and normal maps |
-| Audio | Synthesized at runtime: wind ambience, a spatial temple bell, UI chimes |
+| Audio | Synthesized at runtime (wind ambience, spatial temple bell, UI chimes) plus a bundled multilingual narration guide (neural TTS clips) |
 | Web | Unity **WebGL 2** build, deployed as static files on **Vercel** |
 | Testing | Built-in **smoke test** (`--heritage-smoke`) that tours every temple and exhibit and fails on errors or magenta (missing-shader) pixels |
 
@@ -121,6 +148,9 @@ Tools/Build.ps1                # Command-line build (+ -Smoke)
 
 # Browser build (Builds/WebGL), or use the Unity menu: Heritage > Build WebGL (browser)
 & "C:\Program Files\Unity\Hub\Editor\6000.6.1f1\Editor\Unity.exe" -batchmode -quit -projectPath . -executeMethod VirtualHeritage.Editor.HeritageProject.BuildWebGL
+
+# Quest standalone APK (Builds/Quest), needs the Android module
+& "C:\Program Files\Unity\Hub\Editor\6000.6.1f1\Editor\Unity.exe" -batchmode -quit -projectPath . -executeMethod VirtualHeritage.Editor.HeritageProject.BuildQuest
 
 # Deploy the browser build: copy it into web/ and push main (Vercel is connected to this repo and serves web/, see vercel.json)
 Remove-Item web -Recurse -Force; New-Item web -ItemType Directory; Copy-Item Builds\WebGL\Build,Builds\WebGL\TemplateData,Builds\WebGL\index.html web -Recurse

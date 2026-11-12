@@ -194,7 +194,7 @@ namespace VirtualHeritage
                         var delta = heading * new Vector3(stick.x, 0, stick.y) * (Vector2.ClampMagnitude(stick, 1).magnitude * 1.8f * Time.deltaTime / Mathf.Max(stick.magnitude, 1e-3f));
                         var feet = new Vector3(view.transform.position.x, transform.position.y, view.transform.position.z);
                         var start = feet;
-                        if (Walk(ref feet, delta)) transform.position = ClampToGrounds(transform.position + (feet - start));
+                        if (Walk(ref feet, delta)) { transform.position = ClampToGrounds(transform.position + (feet - start)); WalkedMetres += new Vector2(delta.x, delta.z).magnitude; }
                     }
                 }
                 if (menu.WasPressedThisFrame()) app.OpenHub();
@@ -203,9 +203,61 @@ namespace VirtualHeritage
             DesktopInput();
         }
 
+        public Vector3 GuidePosition => new Vector3(view.transform.position.x, transform.position.y, view.transform.position.z);
+
+        void MoveDesktop(Vector3 step)
+        {
+            if (view.transform.localPosition.y > EyeHeight + .01f)
+            {
+                // Leaving the elevated overview: drop to eye level on the ground below.
+                var drop = transform.position;
+                if (Physics.Raycast(drop + Vector3.up * 2, Vector3.down, out var ground, 4, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) drop.y = ground.point.y;
+                transform.position = drop; eyeLag = 0; view.transform.localPosition = Vector3.up * EyeHeight;
+            }
+            var feet = transform.position; float before = feet.y;
+            if (Walk(ref feet,step)) { eyeLag -= feet.y - before; transform.position = ClampToGrounds(feet); WalkedMetres += new Vector2(step.x,step.z).magnitude; }
+        }
+
+        // ---------- Touch (phones, tablets, mobile browsers): drag left to walk, drag right to look, tap to select ----------
+        struct TouchInfo { public int role; public Vector2 start; public float time, moved; }
+        readonly Dictionary<int,TouchInfo> touches = new Dictionary<int,TouchInfo>();
+        public bool TouchActive { get; private set; }
+        public float WalkedMetres { get; private set; }
+
+        // Returns the walking stick (-1..1 per axis) from the left-hand touch, and applies look and taps.
+        Vector2 ReadTouch()
+        {
+            var screen = Touchscreen.current; var stick = Vector2.zero;
+            if (screen == null) return stick;
+            foreach (var t in screen.touches)
+            {
+                var phase = t.phase.ReadValue(); if (phase == UnityEngine.InputSystem.TouchPhase.None) continue;
+                int id = t.touchId.ReadValue(); Vector2 pos = t.position.ReadValue();
+                if (phase == UnityEngine.InputSystem.TouchPhase.Began)
+                {
+                    bool overUI = (EventSystem.current && EventSystem.current.IsPointerOverGameObject(id)) || app.ui.IsOverUI(pos);
+                    touches[id] = new TouchInfo { role = overUI ? 0 : (pos.x < Screen.width * .45f ? 1 : 2), start = pos, time = Time.unscaledTime };
+                    TouchActive = true; app.ui.SetTouchMode(true); continue;
+                }
+                if (!touches.TryGetValue(id,out var info)) continue;
+                if (phase == UnityEngine.InputSystem.TouchPhase.Ended || phase == UnityEngine.InputSystem.TouchPhase.Canceled)
+                {
+                    if (info.role != 0 && phase == UnityEngine.InputSystem.TouchPhase.Ended && Time.unscaledTime - info.time < .3f && info.moved < 24 && !app.Inspecting)
+                        if (Physics.Raycast(view.ScreenPointToRay(pos),out var hit,100)) hit.collider.GetComponentInParent<HeritageTarget>()?.Activate();
+                    touches.Remove(id); continue;
+                }
+                var delta = t.delta.ReadValue(); info.moved += delta.magnitude; touches[id] = info;
+                if (info.role == 1) stick += Vector2.ClampMagnitude((pos - info.start) / (Mathf.Max(Screen.height,400) * .16f),1);
+                else if (info.role == 2 && !app.Inspecting) { yaw += delta.x * .14f; pitch = Mathf.Clamp(pitch - delta.y * .14f,-65,70); }
+            }
+            return Vector2.ClampMagnitude(stick,1);
+        }
+
         void DesktopInput()
         {
             var keyboard = Keyboard.current; var mouse = Mouse.current;
+            var touchStick = ReadTouch();
+            if (!app.Inspecting && touchStick.sqrMagnitude > .01f) MoveDesktop(Quaternion.Euler(0,yaw,0) * new Vector3(touchStick.x,0,touchStick.y) * 2.4f * Time.deltaTime);
             if (keyboard != null)
             {
                 if (keyboard.escapeKey.wasPressedThisFrame) { if (app.Inspecting) app.CloseInspection(); else app.OpenHub(); }
@@ -228,18 +280,7 @@ namespace VirtualHeritage
                         ((keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) ? 1 : 0) - ((keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) ? 1 : 0));
                     bool run = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
                     step = Quaternion.Euler(0,yaw,0) * Vector3.ClampMagnitude(step,1) * (run ? 5.5f : 2.6f) * Time.deltaTime;
-                    if (step.sqrMagnitude > 0)
-                    {
-                        if (view.transform.localPosition.y > EyeHeight + .01f)
-                        {
-                            // Leaving the elevated overview: drop to eye level on the ground below.
-                            var drop = transform.position;
-                            if (Physics.Raycast(drop + Vector3.up * 2, Vector3.down, out var ground, 4, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) drop.y = ground.point.y;
-                            transform.position = drop; eyeLag = 0; view.transform.localPosition = Vector3.up * EyeHeight;
-                        }
-                        var feet = transform.position; float before = feet.y;
-                        if (Walk(ref feet,step)) { eyeLag -= feet.y - before; transform.position = ClampToGrounds(feet); }
-                    }
+                    if (step.sqrMagnitude > 0) MoveDesktop(step);
                 }
             }
             // Ease the eye over steps instead of popping between ledges.

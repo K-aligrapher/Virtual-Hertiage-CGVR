@@ -1,0 +1,42 @@
+{
+  "questions": [
+    { "id": "q01", "text": "In which year was the Chennakeshava temple at Belur founded?", "options": ["917 CE", "1117 CE", "1317 CE", "1517 CE"], "correct": 1 },
+    { "id": "q02", "text": "Which Hoysala king reigned when the Belur temple was founded?", "options": ["Krishnadevaraya", "Ashoka", "Vishnuvardhana", "Tipu Sultan"], "correct": 2 },
+    { "id": "q03", "text": "What is the raised platform that a Hoysala temple stands on called?", "options": ["Gopuram", "Jagati", "Mandapa", "Garbhagriha"], "correct": 1 },
+    { "id": "q04", "text": "What is the innermost sanctum, where the main image is enshrined, called?", "options": ["Garbhagriha", "Jagati", "Gopuram", "Mandapa"], "correct": 0 },
+    { "id": "q05", "text": "Which stone did Hoysala builders mostly use?", "options": ["Marble", "Red sandstone", "Soapstone", "Brick"], "correct": 2 },
+    { "id": "q06", "text": "What is the Hoysaleswara temple at Halebidu especially known for?", "options": ["One single tall tower", "Twin shrines on a shared platform", "A circular plan", "An underground sanctum"], "correct": 1 },
+    { "id": "q07", "text": "How were many Hoysala columns shaped?", "options": ["Turned on a lathe", "Cast in bronze", "Built from bricks", "Carved flat like panels"], "correct": 0 },
+    { "id": "q08", "text": "In which year were the Sacred Ensembles of the Hoysalas inscribed on the UNESCO World Heritage List?", "options": ["1957", "2005", "2023", "2015"], "correct": 2 },
+    { "id": "q09", "text": "Hampi was the capital of which empire?", "options": ["Hoysala", "Vijayanagara", "Maurya", "Chola"], "correct": 1 },
+    { "id": "q10", "text": "What is a gopuram?", "options": ["A sacred pond", "A tiered temple entrance tower", "A carved ceiling", "A stone chariot"], "correct": 1 },
+    { "id": "q11", "text": "What is a mandapa?", "options": ["A pillared hall", "A temple tower", "A star-shaped platform", "A lamp pillar"], "correct": 0 },
+    { "id": "q12", "text": "In which year was Hampi inscribed as a UNESCO World Heritage site?", "options": ["1947", "1986", "1999", "2023"], "correct": 1 }
+  ],
+  "ssq": [
+    { "name": "General discomfort", "n": 1, "o": 1, "d": 0 },
+    { "name": "Fatigue", "n": 0, "o": 1, "d": 0 },
+    { "name": "Headache", "n": 0, "o": 1, "d": 0 },
+    { "name": "Eyestrain", "n": 0, "o": 1, "d": 0 },
+    { "name": "Difficulty focusing", "n": 0, "o": 1, "d": 1 },
+    { "name": "Increased salivation", "n": 1, "o": 0, "d": 0 },
+    { "name": "Sweating", "n": 1, "o": 0, "d": 0 },
+    { "name": "Nausea", "n": 1, "o": 0, "d": 1 },
+    { "name": "Difficulty concentrating", "n": 1, "o": 1, "d": 0 },
+    { "name": "Fullness of the head", "n": 0, "o": 0, "d": 1 },
+    { "name": "Blurred vision", "n": 0, "o": 1, "d": 1 },
+    { "name": "Dizziness (eyes open)", "n": 0, "o": 0, "d": 1 },
+    { "name": "Dizziness (eyes closed)", "n": 0, "o": 0, "d": 1 },
+    { "name": "Vertigo", "n": 0, "o": 0, "d": 1 },
+    { "name": "Stomach awareness", "n": 1, "o": 0, "d": 0 },
+    { "name": "Burping", "n": 1, "o": 0, "d": 0 }
+  ],
+  "likert": [
+    { "id": "comfort", "text": "The experience felt comfortable.", "guideOnly": false },
+    { "id": "presence", "text": "I felt present inside the temple spaces.", "guideOnly": false },
+    { "id": "ease", "text": "Moving around and interacting was easy.", "guideOnly": false },
+    { "id": "understanding", "text": "The 3D models helped me understand the architecture.", "guideOnly": false },
+    { "id": "guide", "text": "The audio guide helped me learn.", "guideOnly": true },
+    { "id": "again", "text": "I would use this again to learn about heritage.", "guideOnly": false }
+  ]
+}

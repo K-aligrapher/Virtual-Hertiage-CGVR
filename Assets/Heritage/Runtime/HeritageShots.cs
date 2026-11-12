@@ -32,6 +32,8 @@ namespace VirtualHeritage
                 yield return null; yield return null;
                 yield return Capture(shot.name);
             }
+            if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--guide-test")) yield return GuideTest();
+            if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--study-test")) yield return StudyTest();
             if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--walk-check"))
                 foreach (int t in new[] { 0, 1 })
                 {
@@ -46,6 +48,66 @@ namespace VirtualHeritage
 #else
             Application.Quit();
 #endif
+        }
+
+        // Headless runs cannot use ScreenCapture, so the overlay UI is drawn through the camera for the shot.
+        IEnumerator Screen(string name)
+        {
+            var canvas = app.ui.canvas; var mode = canvas.renderMode; var camera = canvas.worldCamera;
+            canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = app.rig.view; canvas.planeDistance = .6f;
+            yield return null; yield return null;
+            yield return Capture(name);
+            canvas.renderMode = mode; canvas.worldCamera = camera;
+        }
+
+        // Walks through each guide zone and checks the right narration is chosen, in English then Hindi.
+        IEnumerator GuideTest()
+        {
+            Debug.Log("HERITAGE_GUIDE start"); app.OpenTemple(0); yield return new WaitForSeconds(3.5f);
+            Debug.Log("HERITAGE_GUIDE opened"); app.guide.SetEnabled(true); Debug.Log("HERITAGE_GUIDE enabled"); app.guide.SetLanguage(0); Debug.Log("HERITAGE_GUIDE language");
+            var log = new System.Text.StringBuilder("HERITAGE_GUIDE welcome=" + app.guide.CurrentKey + " plays=" + app.guide.PlayCount);
+            var stops = new[] { ("courtyard",new Vector3(0,0,-5)), ("steps",new Vector3(0,0,-1.6f)), ("platform",new Vector3(0,.72f,0)), ("hall",new Vector3(0,.82f,3)), ("sanctum",new Vector3(0,.82f,6.2f)) };
+            foreach (var (expect,pos) in stops)
+            {
+                Debug.Log("HERITAGE_GUIDE stop " + expect); app.rig.Place(pos,pos + Vector3.forward,1.7f); Debug.Log("HERITAGE_GUIDE placed " + expect); yield return new WaitForSeconds(2.6f);
+                log.Append(" | " + expect + "->" + app.guide.CurrentKey);
+            }
+            app.guide.SetLanguage(1); app.SelectElement(1); yield return new WaitForSeconds(.5f);
+            log.Append(" | element(hi)->" + app.guide.CurrentKey + " lang=" + app.guide.LanguageName);
+            yield return Screen("62-guide-caption-hindi");
+            app.ClearSelection(); app.guide.SetLanguage(0);
+            log.Append(" | totalPlays=" + app.guide.PlayCount);
+            Debug.Log(log.ToString());
+        }
+
+        IEnumerator StudyTest()
+        {
+            var study = app.Study; app.OpenHub(); yield return new WaitForSeconds(1.2f);
+            study.Begin(); yield return null; yield return Screen("60-study-intro");
+            bool shotQuestion = false, shotExplore = false; int guard = 0; var clicked = new System.Text.StringBuilder();
+            while (study.Running && guard++ < 600)
+            {
+                var page = study.CurrentPage;
+                if (study.Exploring && !study.ProbeShowing)
+                {
+                    if (!shotExplore) { shotExplore = true; app.OpenTemple(0); yield return new WaitForSeconds(2f); app.rig.Place(new Vector3(0,.82f,3),new Vector3(0,1.8f,6),1.7f); yield return new WaitForSeconds(3f); yield return Screen("61-study-explore"); }
+                    if (study.CanFinish) study.Finish(); else yield return new WaitForSeconds(.4f);
+                    continue;
+                }
+                if (page == null) { yield return null; continue; }
+                if (page.keypad) { yield return Screen("63-study-code"); page.onCode("042"); }
+                else if (page.options.Count > 0)
+                {
+                    if (!shotQuestion && page.eyebrow.StartsWith("KNOWLEDGE")) { shotQuestion = true; yield return Screen("64-study-question"); }
+                    page.options[page.eyebrow == "STUDENT STUDY" ? 0 : guard % page.options.Count].action();
+                }
+                yield return null;
+            }
+            string folder = Path.Combine(Application.persistentDataPath,"study");
+            var files = Directory.Exists(folder) ? Directory.GetFiles(folder,"*.csv") : new string[0];
+            string last = files.Length > 0 ? files[files.Length - 1] : "";
+            Debug.Log("HERITAGE_STUDY running=" + study.Running + " csvFiles=" + files.Length + " last=" + last);
+            if (last != "") { var lines = File.ReadAllLines(last); Debug.Log("HERITAGE_STUDY_CSV columns=" + lines[0].Split(',').Length + " values=" + lines[1].Split(',').Length + " head=" + lines[0].Substring(0,Mathf.Min(260,lines[0].Length)) + " row=" + lines[1].Substring(0,Mathf.Min(260,lines[1].Length))); }
         }
 
         // Flood-fills where the walking capsule can reach (same rules as the rig) and reports which targets are reachable.
