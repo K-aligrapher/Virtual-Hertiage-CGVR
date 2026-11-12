@@ -21,3 +21,6 @@ crashlytics-buildid.txt
 Screenshot *.png
 .DS_Store
 Thumbs.db
+
+# Android build leftovers
+.utmp/
