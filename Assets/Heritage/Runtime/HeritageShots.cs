@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UI;
 
 namespace VirtualHeritage
 {
@@ -32,6 +35,7 @@ namespace VirtualHeritage
                 yield return null; yield return null;
                 yield return Capture(shot.name);
             }
+            if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--touch-test")) yield return TouchTest();
             if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--guide-test")) yield return GuideTest();
             if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--study-test")) yield return StudyTest();
             if (Array.Exists(Environment.GetCommandLineArgs(),a => a == "--walk-check"))
@@ -58,6 +62,38 @@ namespace VirtualHeritage
             yield return null; yield return null;
             yield return Capture(name);
             canvas.renderMode = mode; canvas.worldCamera = camera;
+        }
+
+        // A virtual touch screen taps panel buttons, as a phone would.
+        IEnumerator TouchTest()
+        {
+            app.OpenTemple(0); yield return new WaitForSeconds(3f);
+#if UNITY_EDITOR
+            InputSystem.settings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+#endif
+            var touch = InputSystem.AddDevice<Touchscreen>(); yield return null; yield return null; yield return null;
+            var log = new System.Text.StringBuilder("HERITAGE_TOUCH");
+            var guideButton = Array.Find(app.ui.panel.GetComponentsInChildren<Button>(),b => b.GetComponentInChildren<UnityEngine.UI.Text>().text.StartsWith("Guide"));
+            bool before = app.guide.Enabled;
+            yield return Tap(touch,guideButton);
+            log.Append(" guide " + before + "->" + app.guide.Enabled);
+            var thenButton = Array.Find(app.ui.panel.GetComponentsInChildren<Button>(),b => b.GetComponentInChildren<UnityEngine.UI.Text>().text == "Then");
+            yield return Tap(touch,thenButton);
+            log.Append(" then=" + app.Then);
+            var langButton = Array.Find(app.ui.panel.GetComponentsInChildren<Button>(),b => b.GetComponentInChildren<UnityEngine.UI.Text>().text == app.guide.LanguageName);
+            string lang = app.guide.LanguageName; yield return Tap(touch,langButton);
+            log.Append(" language " + lang + "->" + app.guide.LanguageName + " touchActive=" + app.rig.TouchActive);
+            Debug.Log(log.ToString());
+        }
+
+        IEnumerator Tap(Touchscreen touch,Button button)
+        {
+            Vector2 pos = RectTransformUtility.WorldToScreenPoint(null,button.transform.position);
+            InputSystem.QueueStateEvent(touch,new TouchState { touchId = 1, phase = UnityEngine.InputSystem.TouchPhase.Began, position = pos, pressure = 1 });
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(touch,new TouchState { touchId = 1, phase = UnityEngine.InputSystem.TouchPhase.Ended, position = pos });
+            yield return null; yield return null; yield return null;
         }
 
         // Walks through each guide zone and checks the right narration is chosen, in English then Hindi.

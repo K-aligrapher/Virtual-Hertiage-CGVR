@@ -60,7 +60,7 @@ namespace VirtualHeritage
             headPose.trackingStateInput = new InputActionProperty(Action("Head tracking", "<XRHMD>/trackingState"));
             headPose.enabled = false;
 
-            var events = new GameObject("XR and desktop event system"); events.transform.SetParent(transform,false);
+            var events = new GameObject("XR and desktop event system"); events.transform.SetParent(transform,false); eventsObject = events;
             events.AddComponent<EventSystem>();
             var input = events.AddComponent<XRUIInputModule>();
             input.enableMouseInput = true; input.enableTouchInput = true; input.enableXRInput = true;
@@ -222,6 +222,18 @@ namespace VirtualHeritage
         struct TouchInfo { public int role; public Vector2 start; public float time, moved; }
         readonly Dictionary<int,TouchInfo> touches = new Dictionary<int,TouchInfo>();
         public bool TouchActive { get; private set; }
+        GameObject eventsObject; bool touchUI;
+
+        // The XR UI module only reads the mouse here. On a touch screen the standard Input System module is needed
+        // so taps press buttons and fingers drag sliders. VR keeps the XR module.
+        void EnableTouchUI()
+        {
+            if (touchUI || IsVR || !eventsObject) return;
+            touchUI = true;
+            var xr = eventsObject.GetComponent<XRUIInputModule>(); if (xr) xr.enabled = false;
+            var module = eventsObject.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+            module.AssignDefaultActions();
+        }
         public float WalkedMetres { get; private set; }
 
         // Returns the walking stick (-1..1 per axis) from the left-hand touch, and applies look and taps.
@@ -237,7 +249,7 @@ namespace VirtualHeritage
                 {
                     bool overUI = (EventSystem.current && EventSystem.current.IsPointerOverGameObject(id)) || app.ui.IsOverUI(pos);
                     touches[id] = new TouchInfo { role = overUI ? 0 : (pos.x < Screen.width * .45f ? 1 : 2), start = pos, time = Time.unscaledTime };
-                    TouchActive = true; app.ui.SetTouchMode(true); continue;
+                    TouchActive = true; app.ui.SetTouchMode(true); EnableTouchUI(); continue;
                 }
                 if (!touches.TryGetValue(id,out var info)) continue;
                 if (phase == UnityEngine.InputSystem.TouchPhase.Ended || phase == UnityEngine.InputSystem.TouchPhase.Canceled)
@@ -256,6 +268,7 @@ namespace VirtualHeritage
         void DesktopInput()
         {
             var keyboard = Keyboard.current; var mouse = Mouse.current;
+            if (!touchUI && Touchscreen.current != null && Application.platform != RuntimePlatform.Android) EnableTouchUI();
             var touchStick = ReadTouch();
             if (!app.Inspecting && touchStick.sqrMagnitude > .01f) MoveDesktop(Quaternion.Euler(0,yaw,0) * new Vector3(touchStick.x,0,touchStick.y) * 2.4f * Time.deltaTime);
             if (keyboard != null)
