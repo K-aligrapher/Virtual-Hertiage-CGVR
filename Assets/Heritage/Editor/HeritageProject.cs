@@ -243,7 +243,7 @@ namespace VirtualHeritage.Editor
                 Directory.CreateDirectory("Artifacts");
                 File.WriteAllText("Artifacts/webgl-build-result.txt",report.summary.result + "\nErrors: " + report.summary.totalErrors + "\nSize: " + report.summary.totalSize);
                 if (report.summary.result != BuildResult.Succeeded) throw new InvalidOperationException("WebGL build failed: " + report.summary.result);
-                File.WriteAllText("Builds/WebGL/vercel.json","{\n  \"headers\": [\n    { \"source\": \"/Build/(.*)\", \"headers\": [ { \"key\": \"Cache-Control\", \"value\": \"public, max-age=31536000, immutable\" } ] }\n  ]\n}\n");
+                File.WriteAllText("Builds/WebGL/vercel.json","{\n  \"headers\": [\n    { \"source\": \"/Build/(.*)\", \"headers\": [ { \"key\": \"Cache-Control\", \"value\": \"public, max-age=0, must-revalidate\" } ] }\n  ]\n}\n");
                 Debug.Log("HERITAGE: WebGL build succeeded.");
             }
             finally
